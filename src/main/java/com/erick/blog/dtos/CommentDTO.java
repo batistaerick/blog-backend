@@ -1,53 +1,31 @@
-package com.erick.blog.entities;
+package com.erick.blog.dtos;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "tb_comment")
-public class Comment implements Serializable {
+public class CommentDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant date;
+    private PostDTO post;
+    private UserDTO userComment;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "post_id", nullable = false)
-    @JsonIgnore
-    private Post post;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "userComment_id", nullable = false)
-    @JsonIgnore
-    private User userComment;
-
-    public Comment() {
+    public CommentDTO() {
     }
 
-    public Comment(Long id, String text, Instant date, Post post, User userComment) {
+    public CommentDTO(Long id, String text, Instant date, PostDTO post, UserDTO userComment) {
         this.id = id;
         this.text = text;
         this.date = date;
         this.post = post;
         this.userComment = userComment;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
     public Long getId() {
@@ -74,19 +52,19 @@ public class Comment implements Serializable {
         this.date = date;
     }
 
-    public Post getPost() {
+    public PostDTO getPost() {
         return post;
     }
 
-    public void setPost(Post post) {
+    public void setPost(PostDTO post) {
         this.post = post;
     }
 
-    public User getUserComment() {
+    public UserDTO getUserComment() {
         return userComment;
     }
 
-    public void setUserComment(User userComment) {
+    public void setUserComment(UserDTO userComment) {
         this.userComment = userComment;
     }
 
@@ -106,7 +84,7 @@ public class Comment implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Comment other = (Comment) obj;
+        CommentDTO other = (CommentDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

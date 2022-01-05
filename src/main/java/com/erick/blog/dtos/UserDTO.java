@@ -1,56 +1,36 @@
-package com.erick.blog.entities;
+package com.erick.blog.dtos;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
+public class UserDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
-    @Column(unique = true)
     private String email;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    private List<PostDTO> postList;
+    private List<CommentDTO> commentList;
+    private List<AlbumDTO> albumsList;
 
-    @OneToMany(mappedBy = "userPost", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Post> postList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> commentList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userAlbums", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Album> albumsList = new ArrayList<>();
-
-    public User() {
+    public UserDTO() {
     }
 
-    public User(Long id, String name, String email, String password) {
+    public UserDTO(Long id, String name, String email, String password, List<PostDTO> postList,
+            List<CommentDTO> commentList, List<AlbumDTO> albumsList) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.postList = postList;
+        this.commentList = commentList;
+        this.albumsList = albumsList;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
     public Long getId() {
@@ -85,16 +65,28 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public List<Post> getPostList() {
+    public List<PostDTO> getPostList() {
         return postList;
     }
 
-    public List<Comment> getCommentList() {
+    public void setPostList(List<PostDTO> postList) {
+        this.postList = postList;
+    }
+
+    public List<CommentDTO> getCommentList() {
         return commentList;
     }
 
-    public List<Album> getAlbumsList() {
+    public void setCommentList(List<CommentDTO> commentList) {
+        this.commentList = commentList;
+    }
+
+    public List<AlbumDTO> getAlbumsList() {
         return albumsList;
+    }
+
+    public void setAlbumsList(List<AlbumDTO> albumsList) {
+        this.albumsList = albumsList;
     }
 
     @Override
@@ -113,7 +105,7 @@ public class User implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        User other = (User) obj;
+        UserDTO other = (UserDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

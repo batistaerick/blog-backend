@@ -2,6 +2,7 @@ package com.erick.blog.controllers;
 
 import java.util.List;
 
+import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.User;
 import com.erick.blog.services.UserService;
 
@@ -17,34 +18,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/users/findAll")
+    @GetMapping("/findAll")
     public ResponseEntity<List<User>> findAll() {
         List<User> list = userService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping(value = "/users/findById/{id}")
+    @GetMapping("/findById/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
         User obj = userService.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
-    @GetMapping(value = "/users/validatePassword")
+    @GetMapping("/validatePassword")
     public ResponseEntity<Boolean> validatePassword(@RequestParam String login, @RequestParam String password) {
         Boolean valid = userService.validatePassword(login, password);
-        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+        HttpStatus status = Boolean.TRUE.equals((valid)) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(valid);
     }
 
-    @PutMapping(value = "/users/insertUser")
-    public ResponseEntity<User> insertUser(@RequestBody User user) {
-        User obj = userService.insertUser(user);
+    @PutMapping("/insertUser")
+    public ResponseEntity<User> insertUser(@RequestBody UserDTO userDTO) {
+        User obj = userService.insertUser(userDTO);
         return ResponseEntity.ok().body(obj);
     }
 }

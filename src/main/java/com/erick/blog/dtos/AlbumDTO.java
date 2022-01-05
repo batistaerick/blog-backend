@@ -1,41 +1,26 @@
-package com.erick.blog.entities;
+package com.erick.blog.dtos;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "tb_album")
-public class Album implements Serializable {
+public class AlbumDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String image;
+    private UserDTO userAlbums;
 
-    @ManyToOne
-    @JoinColumn(name = "userAlbums_id", nullable = false)
-    @JsonIgnore
-    private User userAlbums;
-
-    public Album() {
+    public AlbumDTO() {
     }
 
-    public Album(Long id, String image, User userAlbums) {
+    public AlbumDTO(Long id, String image, UserDTO userAlbums) {
         this.id = id;
         this.image = image;
         this.userAlbums = userAlbums;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
     public Long getId() {
@@ -54,11 +39,11 @@ public class Album implements Serializable {
         this.image = image;
     }
 
-    public User getUserAlbums() {
+    public UserDTO getUserAlbums() {
         return userAlbums;
     }
 
-    public void setUserAlbums(User userAlbums) {
+    public void setUserAlbums(UserDTO userAlbums) {
         this.userAlbums = userAlbums;
     }
 
@@ -78,7 +63,7 @@ public class Album implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Album other = (Album) obj;
+        AlbumDTO other = (AlbumDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

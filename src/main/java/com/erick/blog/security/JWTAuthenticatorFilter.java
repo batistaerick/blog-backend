@@ -11,9 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.erick.blog.data.UserDetailData;
 import com.erick.blog.entities.User;
+import com.erick.blog.exceptions.AuthenticateUserException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,9 +42,9 @@ public class JWTAuthenticatorFilter extends UsernamePasswordAuthenticationFilter
             .readValue(request.getInputStream(), User.class);
 
             return authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword(), new ArrayList<>()));
+            .authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), new ArrayList<>()));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to authenticate user", e);
+            throw new AuthenticateUserException(e.getMessage());
         }
     }
 

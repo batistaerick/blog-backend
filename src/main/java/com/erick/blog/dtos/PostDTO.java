@@ -1,61 +1,37 @@
-package com.erick.blog.entities;
+package com.erick.blog.dtos;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "tb_post")
-public class Post implements Serializable {
+public class PostDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant date;
-
     private String title;
-
     private String body;
-
     private String image;
+    private UserDTO userPost;
+    private List<CommentDTO> commentList;
 
-    @ManyToOne
-    @JoinColumn(name = "userPost_id", nullable = false)
-    @JsonIgnore
-    private User userPost;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> commentList = new ArrayList<>();
-
-    public Post() {
+    public PostDTO() {
     }
 
-    public Post(Long id, Instant date, String title, String body, String image, User userPost) {
+    public PostDTO(Long id, Instant date, String title, String body, String image, UserDTO userPost,
+            List<CommentDTO> commentList) {
         this.id = id;
         this.date = date;
         this.title = title;
         this.body = body;
         this.image = image;
         this.userPost = userPost;
+        this.commentList = commentList;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
     public Long getId() {
@@ -98,19 +74,19 @@ public class Post implements Serializable {
         this.image = image;
     }
 
-    public User getUserPost() {
+    public UserDTO getUserPost() {
         return userPost;
     }
 
-    public void setUserPost(User userPost) {
+    public void setUserPost(UserDTO userPost) {
         this.userPost = userPost;
     }
 
-    public List<Comment> getCommentList() {
+    public List<CommentDTO> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(List<Comment> commentList) {
+    public void setCommentList(List<CommentDTO> commentList) {
         this.commentList = commentList;
     }
 
@@ -130,7 +106,7 @@ public class Post implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Post other = (Post) obj;
+        PostDTO other = (PostDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

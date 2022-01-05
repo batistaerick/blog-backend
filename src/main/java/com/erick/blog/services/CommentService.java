@@ -4,52 +4,59 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import com.erick.blog.dtos.CommentDTO;
+import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.Comment;
-import com.erick.blog.entities.User;
+import com.erick.blog.exceptions.DeleteException;
 import com.erick.blog.repositories.CommentRepository;
-import com.erick.blog.repositories.PostRepository;
-import com.erick.blog.repositories.UserRepository;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javassist.NotFoundException;
 
 @Service
 public class CommentService {
 
     @Autowired
-    private CommentRepository commentRepository;
+    private CommentRepository repository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private PostRepository postRepository;
+    private PostService postService;
 
     public List<Comment> findAll() {
-        List<Comment> list = commentRepository.findAll();
-        return list;
+        return repository.findAll();
     }
 
     public Comment findById(Long id) {
-        Optional<Comment> obj = commentRepository.findById(id);
-        return obj.get();
+        Optional<Comment> obj = repository.findById(id);
+        return obj.isPresent() ? obj.get() : null;
     }
 
-    public Comment insertPost(Long userId, Long postId, Comment comment) throws NotFoundException {
-        comment.setUserComment(userRepository.findById(userId).get());
-        comment.setPost(postRepository.findById(postId).get());
+    public Comment insertPost(Long userId, Long postId, CommentDTO commentDTO) {
+        Comment comment = new Comment();
+
+        BeanUtils.copyProperties(commentDTO, comment);
+
+        comment.setUserComment(userService.findById(userId));
+        comment.setPost(postService.findById(postId));
         comment.setDate(Instant.now());
-        comment = commentRepository.save(comment);
+        comment = repository.save(comment);
+
         return comment;
     }
 
-    public void deleteById(Long id, User user) throws Exception {
-        if (commentRepository.findById(id).get().getUserComment().getLogin().equals(user.getLogin())) {
-            commentRepository.deleteById(id);
-        } else {
-            throw new Exception("Only the creator can delete this comment");
+    public void deleteById(Long id, UserDTO userDTO) {
+        try {
+            if (findById(id).getUserComment().getEmail().equals(userDTO.getEmail())) {
+                repository.deleteById(id);
+            } else {
+                throw new DeleteException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
