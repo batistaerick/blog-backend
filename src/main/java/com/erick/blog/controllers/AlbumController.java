@@ -22,28 +22,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlbumController {
 
     @Autowired
-    private AlbumService albumService;
+    private AlbumService service;
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Album>> findAll() {
-        List<Album> list = albumService.findAll();
+        List<Album> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<Album> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(albumService.findById(id));
+        return ResponseEntity.ok().body(service.findById(id));
     }
 
     @PostMapping("/insertAlbum")
     public ResponseEntity<Album> insertAlbum(@RequestBody AlbumDTO albumDTO, String url) {
-        Album obj = albumService.insertAlbum(albumDTO, url);
+        Album obj = service.insertAlbum(albumDTO, url);
         return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping("/deleteById/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        albumService.deleteById(id, userDTO);
+        service.deleteById(id, userDTO);
         return ResponseEntity.noContent().build();
     }
 }

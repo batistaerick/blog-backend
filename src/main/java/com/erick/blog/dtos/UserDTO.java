@@ -9,7 +9,7 @@ public class UserDTO implements Serializable {
 
     private Long id;
     private String name;
-    private String email;
+    private String login;
     private String password;
     private List<PostDTO> postList;
     private List<CommentDTO> commentList;
@@ -18,11 +18,11 @@ public class UserDTO implements Serializable {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String name, String email, String password, List<PostDTO> postList,
+    public UserDTO(Long id, String name, String login, String password, List<PostDTO> postList,
             List<CommentDTO> commentList, List<AlbumDTO> albumsList) {
         this.id = id;
         this.name = name;
-        this.email = email;
+        this.login = login;
         this.password = password;
         this.postList = postList;
         this.commentList = commentList;
@@ -49,12 +49,12 @@ public class UserDTO implements Serializable {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {

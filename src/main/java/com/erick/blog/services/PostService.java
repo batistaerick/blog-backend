@@ -54,7 +54,7 @@ public class PostService {
 
     public void deleteById(Long id, UserDTO userDTO) {
         try {
-            if (findById(id).getUserPost().getEmail().equals(userDTO.getEmail())) {
+            if (findById(id).getUserPost().getLogin().equals(userDTO.getLogin())) {
                 repository.deleteById(id);
             } else {
                 throw new DeleteException();

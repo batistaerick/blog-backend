@@ -22,29 +22,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
 
     @Autowired
-    private CommentService commentService;
+    private CommentService service;
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Comment>> findAll() {
-        return ResponseEntity.ok().body(commentService.findAll());
+        return ResponseEntity.ok().body(service.findAll());
     }
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<Comment> findById(@PathVariable Long id) {
-        Comment obj = commentService.findById(id);
+        Comment obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping("/insertComment/{userId}/{postId}")
     public ResponseEntity<Comment> insertComment(@PathVariable Long userId, @PathVariable Long postId,
             @RequestBody CommentDTO commentDTO) {
-        Comment obj = commentService.insertPost(userId, postId, commentDTO);
+        Comment obj = service.insertPost(userId, postId, commentDTO);
         return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping("/deleteById/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        commentService.deleteById(id, userDTO);
+        service.deleteById(id, userDTO);
         return ResponseEntity.noContent().build();
     }
 }

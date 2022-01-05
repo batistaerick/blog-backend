@@ -29,7 +29,7 @@ public class User implements Serializable {
     private String name;
 
     @Column(unique = true)
-    private String email;
+    private String login;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -46,10 +46,10 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, String name, String email, String password) {
+    public User(Long id, String name, String login, String password) {
         this.id = id;
         this.name = name;
-        this.email = email;
+        this.login = login;
         this.password = password;
     }
 
@@ -69,12 +69,12 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {

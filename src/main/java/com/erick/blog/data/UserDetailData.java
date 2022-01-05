@@ -29,7 +29,7 @@ public class UserDetailData implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.orElse(new User()).getEmail();
+        return user.orElse(new User()).getLogin();
     }
 
     @Override

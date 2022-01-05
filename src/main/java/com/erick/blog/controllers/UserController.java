@@ -22,30 +22,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserService service;
 
     @GetMapping("/findAll")
     public ResponseEntity<List<User>> findAll() {
-        List<User> list = userService.findAll();
+        List<User> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
-        User obj = userService.findById(id);
+        User obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @GetMapping("/validatePassword")
     public ResponseEntity<Boolean> validatePassword(@RequestParam String login, @RequestParam String password) {
-        Boolean valid = userService.validatePassword(login, password);
+        Boolean valid = service.validatePassword(login, password);
         HttpStatus status = Boolean.TRUE.equals((valid)) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(valid);
     }
 
     @PutMapping("/insertUser")
     public ResponseEntity<User> insertUser(@RequestBody UserDTO userDTO) {
-        User obj = userService.insertUser(userDTO);
+        User obj = service.insertUser(userDTO);
         return ResponseEntity.ok().body(obj);
     }
 }

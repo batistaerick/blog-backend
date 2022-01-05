@@ -22,35 +22,35 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
     @Autowired
-    private PostService postService;
+    private PostService service;
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Post>> findAll() {
-        List<Post> list = postService.findAll();
+        List<Post> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<Post> findById(@PathVariable Long id) {
-        Post obj = postService.findById(id);
+        Post obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @GetMapping("/findByTittle")
     public ResponseEntity<List<Post>> findByTittle(@PathVariable String search) {
-        List<Post> list = postService.findByTittle(search);
+        List<Post> list = service.findByTittle(search);
         return ResponseEntity.ok().body(list);
     }
 
     @PostMapping("/insertPost/{userId}")
     public ResponseEntity<Post> insertPost(@PathVariable Long userId, @RequestBody PostDTO postDTO, String url) {
-        Post obj = postService.insertPost(userId, postDTO, url);
+        Post obj = service.insertPost(userId, postDTO, url);
         return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, UserDTO userDTO) {
-        postService.deleteById(id, userDTO);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        service.deleteById(id, userDTO);
         return ResponseEntity.noContent().build();
     }
 }
