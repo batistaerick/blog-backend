@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class JWTFilterValidation extends BasicAuthenticationFilter {
 
     public static final String HEADER_ATTRIBUTE = "Authorization";
-
     public static final String PREFIX_ATTRIBUTE = "Bearer ";
 
     public JWTFilterValidation(AuthenticationManager authenticationManager) {
@@ -36,32 +35,28 @@ public class JWTFilterValidation extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-
         if (!attribute.startsWith(PREFIX_ATTRIBUTE)) {
             chain.doFilter(request, response);
             return;
         }
 
         String token = attribute.replace(PREFIX_ATTRIBUTE, "");
-
         UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(token);
-
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
-        
-        String user = JWT
-            .require(Algorithm.HMAC512(JWTAuthenticatorFilter.PASSWORD_TOKEN))
-            .build()
-            .verify(token)
-            .getSubject();
 
-        if(user == null) {
+        String user = JWT
+                .require(Algorithm.HMAC512(JWTAuthenticatorFilter.PASSWORD_TOKEN))
+                .build()
+                .verify(token)
+                .getSubject();
+
+        if (user == null) {
             return null;
         }
-
         return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
     }
 }

@@ -1,7 +1,7 @@
 package com.erick.blog.security;
 
 import com.erick.blog.services.UserDetailServiceImpl;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,16 +15,11 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailServiceImpl userDetailServiceImpl;
-
     private final PasswordEncoder passwordEncoder;
-
-    public JWTConfiguration(UserDetailServiceImpl userDetailServiceImpl, PasswordEncoder passwordEncoder) {
-        this.userDetailServiceImpl = userDetailServiceImpl;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -34,25 +29,22 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
-            .disable()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/login")
-            .permitAll().anyRequest()
-            .authenticated()
-            .and()
-            .addFilter(new JWTAuthenticatorFilter(authenticationManager()))
-            .addFilter(new JWTFilterValidation(authenticationManager()))
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/login")
+                .permitAll().anyRequest()
+                .authenticated()
+                .and()
+                .addFilter(new JWTAuthenticatorFilter(authenticationManager()))
+                .addFilter(new JWTFilterValidation(authenticationManager()))
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-        source.registerCorsConfiguration("/**", corsConfiguration);
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 
         return source;
     }

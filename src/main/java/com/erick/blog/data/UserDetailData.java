@@ -1,21 +1,17 @@
 package com.erick.blog.data;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-
 import com.erick.blog.entities.User;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+@RequiredArgsConstructor
 public class UserDetailData implements UserDetails {
 
-    private final Optional<User> user;
-
-    public UserDetailData(Optional<User> user) {
-        this.user = user;
-    }
+    private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -24,12 +20,12 @@ public class UserDetailData implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.orElse(new User()).getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.orElse(new User()).getLogin();
+        return user.getLogin();
     }
 
     @Override
