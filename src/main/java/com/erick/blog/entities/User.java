@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "tb_user")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {

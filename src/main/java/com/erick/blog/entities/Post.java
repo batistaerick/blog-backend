@@ -14,7 +14,6 @@ import java.util.List;
 @Table(name = "tb_post")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post implements Serializable {

@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Table(name = "tb_album")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class Album implements Serializable {

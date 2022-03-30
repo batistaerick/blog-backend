@@ -12,7 +12,6 @@ import java.time.Instant;
 @Table(name = "tb_comment")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comment implements Serializable {
