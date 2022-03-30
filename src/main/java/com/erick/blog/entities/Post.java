@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_post")
+@Table(name = "t_post")
 @Getter
 @Setter
 @AllArgsConstructor

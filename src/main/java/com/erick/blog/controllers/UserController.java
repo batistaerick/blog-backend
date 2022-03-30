@@ -34,8 +34,8 @@ public class UserController {
         return ResponseEntity.status(status).body(valid);
     }
 
-    @PutMapping("/insertUser")
+    @PostMapping("/save")
     public ResponseEntity<User> insertUser(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(service.insertUser(userDTO));
+        return ResponseEntity.ok(service.save(userDTO));
     }
 }

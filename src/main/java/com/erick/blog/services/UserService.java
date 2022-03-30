@@ -27,7 +27,7 @@ public class UserService {
         return repository.findById(id).orElseThrow(() -> new UserException("User not found."));
     }
 
-    public User insertUser(UserDTO userDTO) {
+    public User save(UserDTO userDTO) {
         User user = dtoToEntity(userDTO);
         user.setPassword(encoder.encode(user.getPassword()));
         return repository.save(user);

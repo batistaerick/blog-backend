@@ -32,9 +32,9 @@ public class PostController {
         return ResponseEntity.ok(service.findByTittle(search));
     }
 
-    @PostMapping("/insertPost/{userId}")
+    @PostMapping("/save/{userId}")
     public ResponseEntity<Post> insertPost(@PathVariable Long userId, @RequestBody PostDTO postDTO, String url) {
-        return ResponseEntity.ok(service.insertPost(userId, postDTO, url));
+        return ResponseEntity.ok(service.save(userId, postDTO, url));
     }
 
     @DeleteMapping("/deleteById/{id}")

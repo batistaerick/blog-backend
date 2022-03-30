@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
-@Table(name = "tb_comment")
+@Table(name = "t_comment")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -34,7 +34,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Post insertPost(Long userId, PostDTO postDTO, String image) {
+    public Post save(Long userId, PostDTO postDTO, String image) {
         Post post = dtoToEntity(postDTO);
 
         if (image != null) {

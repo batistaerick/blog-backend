@@ -29,7 +29,7 @@ public class CommentService {
         return repository.findById(id).orElseThrow(() -> new CommentException("Comment not found!"));
     }
 
-    public Comment insertPost(Long userId, Long postId, CommentDTO commentDTO) {
+    public Comment save(Long userId, Long postId, CommentDTO commentDTO) {
         Comment comment = dtoToEntity(commentDTO);
         comment.setUserComment(userService.findById(userId));
         comment.setPost(postService.findById(postId));

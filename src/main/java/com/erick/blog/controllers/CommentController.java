@@ -27,10 +27,10 @@ public class CommentController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PostMapping("/insertComment/{userId}/{postId}")
+    @PostMapping("/save/{userId}/{postId}")
     public ResponseEntity<Comment> insertComment(@PathVariable Long userId, @PathVariable Long postId,
                                                  @RequestBody CommentDTO commentDTO) {
-        return ResponseEntity.ok(service.insertPost(userId, postId, commentDTO));
+        return ResponseEntity.ok(service.save(userId, postId, commentDTO));
     }
 
     @DeleteMapping("/deleteById/{id}")

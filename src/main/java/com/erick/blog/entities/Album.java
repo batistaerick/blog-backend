@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tb_album")
+@Table(name = "t_album")
 @Getter
 @Setter
 @AllArgsConstructor
