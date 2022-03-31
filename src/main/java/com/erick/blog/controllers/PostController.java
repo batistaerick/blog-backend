@@ -1,7 +1,6 @@
 package com.erick.blog.controllers;
 
 import com.erick.blog.dtos.PostDTO;
-import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.Post;
 import com.erick.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/posts")
+@RequestMapping("/posts")
 public class PostController {
 
     @Autowired
@@ -27,19 +26,19 @@ public class PostController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/findByTittle")
-    public ResponseEntity<List<Post>> findByTittle(@PathVariable String search) {
-        return ResponseEntity.ok(service.findByTittle(search));
+    @GetMapping("/findByTitle/{title}")
+    public ResponseEntity<List<Post>> findByTitle(@PathVariable String title) {
+        return ResponseEntity.ok(service.findByTitle(title));
     }
 
-    @PostMapping("/save/{userId}")
-    public ResponseEntity<Post> insertPost(@PathVariable Long userId, @RequestBody PostDTO postDTO, String url) {
-        return ResponseEntity.ok(service.save(userId, postDTO, url));
+    @PostMapping("/save")
+    public ResponseEntity<Post> save(@RequestParam Long userId, @RequestBody PostDTO postDTO) {
+        return ResponseEntity.ok(service.save(userId, postDTO));
     }
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        service.deleteById(id, userDTO);
+    @DeleteMapping("/deleteById")
+    public ResponseEntity<Void> delete(@RequestParam Long postId, @RequestParam String userEmail) {
+        service.deleteById(postId, userEmail);
         return ResponseEntity.noContent().build();
     }
 }

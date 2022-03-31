@@ -4,20 +4,21 @@ import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.User;
 import com.erick.blog.exceptions.UserException;
 import com.erick.blog.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository repository;
+    @Autowired
+    private UserRepository repository;
 
-    private final PasswordEncoder encoder;
+    @Autowired
+    private PasswordEncoder encoder;
 
     public List<User> findAll() {
         return repository.findAll();
@@ -33,12 +34,12 @@ public class UserService {
         return repository.save(user);
     }
 
-    public User findByLogin(String login) {
-        return repository.findByLogin(login).orElseThrow(() -> new UserException("User not found."));
+    public User findByEmail(String login) {
+        return repository.findByEmail(login).orElseThrow(() -> new UserException("User not found."));
     }
 
     public Boolean validatePassword(String login, String password) {
-        return encoder.matches(password, findByLogin(login).getPassword());
+        return encoder.matches(password, findByEmail(login).getPassword());
     }
 
     public User dtoToEntity(UserDTO dto) {
@@ -47,7 +48,7 @@ public class UserService {
             BeanUtils.copyProperties(dto, entity);
             return entity;
         } catch (Exception e) {
-            throw new UserException(e.getMessage());
+            throw new UserException(e);
         }
     }
 }

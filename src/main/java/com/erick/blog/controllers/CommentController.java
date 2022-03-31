@@ -1,7 +1,6 @@
 package com.erick.blog.controllers;
 
 import com.erick.blog.dtos.CommentDTO;
-import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.Comment;
 import com.erick.blog.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/comments")
+@RequestMapping("/comments")
 public class CommentController {
 
     @Autowired
@@ -27,15 +26,15 @@ public class CommentController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PostMapping("/save/{userId}/{postId}")
-    public ResponseEntity<Comment> insertComment(@PathVariable Long userId, @PathVariable Long postId,
-                                                 @RequestBody CommentDTO commentDTO) {
+    @PostMapping("/save")
+    public ResponseEntity<Comment> save(@RequestParam Long userId, @RequestParam Long postId,
+                                        @RequestBody CommentDTO commentDTO) {
         return ResponseEntity.ok(service.save(userId, postId, commentDTO));
     }
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        service.deleteById(id, userDTO);
+    @DeleteMapping("/deleteById")
+    public ResponseEntity<Void> deleteById(@RequestParam Long idComment, @RequestParam String userEmail) {
+        service.deleteById(idComment, userEmail);
         return ResponseEntity.noContent().build();
     }
 }

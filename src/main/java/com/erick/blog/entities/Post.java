@@ -1,13 +1,17 @@
 package com.erick.blog.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Post implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -31,13 +36,14 @@ public class Post implements Serializable {
 
     private String body;
 
-    private String image;
+    private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "userPost_id", nullable = false)
-    @JsonIgnore
-    private User userPost;
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "post")
+    @JsonManagedReference
+    private List<Comment> comments;
 }

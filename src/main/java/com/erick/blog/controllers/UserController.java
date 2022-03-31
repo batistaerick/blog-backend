@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -27,15 +27,20 @@ public class UserController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @GetMapping("/findByEmail/{email}")
+    public ResponseEntity<User> findByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(service.findByEmail(email));
+    }
+
     @GetMapping("/validatePassword")
-    public ResponseEntity<Boolean> validatePassword(@RequestParam String login, @RequestParam String password) {
-        Boolean valid = service.validatePassword(login, password);
+    public ResponseEntity<Boolean> validatePassword(@RequestParam String email, @RequestParam String password) {
+        Boolean valid = service.validatePassword(email, password);
         HttpStatus status = Boolean.TRUE.equals((valid)) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(valid);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<User> insertUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<User> save(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(service.save(userDTO));
     }
 }

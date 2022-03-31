@@ -1,25 +1,24 @@
 package com.erick.blog.services;
 
 import com.erick.blog.dtos.PostDTO;
-import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.Post;
 import com.erick.blog.exceptions.PostException;
-import com.erick.blog.exceptions.UserException;
 import com.erick.blog.repositories.PostRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class PostService {
 
-    private final PostRepository repository;
-    private final UserService userService;
+    @Autowired
+    private PostRepository repository;
+
+    @Autowired
+    private UserService userService;
 
     public List<Post> findAll() {
         return repository.findAll();
@@ -29,31 +28,27 @@ public class PostService {
         return repository.findById(id).orElseThrow(() -> new PostException("Post not found!"));
     }
 
-    public List<Post> findByTittle(String search) {
-        return findAll().stream().filter(post -> post.getTitle().contains(search))
-                .collect(Collectors.toList());
+    public List<Post> findByTitle(String title) {
+        return findAll().stream().filter(post -> post.getTitle().contains(title)).toList();
     }
 
-    public Post save(Long userId, PostDTO postDTO, String image) {
+    public Post save(Long userId, PostDTO postDTO) {
         Post post = dtoToEntity(postDTO);
 
-        if (image != null) {
-            post.setImage(image);
-        }
         post.setDate(Instant.now());
-        post.setUserPost(userService.findById(userId));
+        post.setUser(userService.findById(userId));
 
         return repository.save(post);
     }
 
-    public void deleteById(Long id, UserDTO userDTO) {
+    public void deleteById(Long postId, String userEmail) {
         try {
-            if (!findById(id).getUserPost().getLogin().equals(userDTO.getLogin())) {
+            if (!findById(postId).getUser().getEmail().equals(userEmail)) {
                 throw new PostException("Only creator can delete this comment!");
             }
-            repository.deleteById(id);
+            repository.deleteById(postId);
         } catch (Exception e) {
-            throw new PostException(e.getMessage());
+            throw new PostException(e);
         }
     }
 
@@ -63,7 +58,7 @@ public class PostService {
             BeanUtils.copyProperties(dto, entity);
             return entity;
         } catch (Exception e) {
-            throw new UserException(e.getMessage());
+            throw new PostException(e);
         }
     }
 }

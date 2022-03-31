@@ -1,11 +1,15 @@
 package com.erick.blog.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class User implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -25,17 +30,20 @@ public class User implements Serializable {
     private String name;
 
     @Column(unique = true)
-    private String login;
+    private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @OneToMany(mappedBy = "userPost", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Post> postList = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Post> posts;
 
-    @OneToMany(mappedBy = "userComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Comment> comments;
 
-    @OneToMany(mappedBy = "userAlbums", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Album> albumsList = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Album> albums;
 }

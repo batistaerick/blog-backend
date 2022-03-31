@@ -1,7 +1,6 @@
 package com.erick.blog.controllers;
 
 import com.erick.blog.dtos.AlbumDTO;
-import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.Album;
 import com.erick.blog.services.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/albums")
+@RequestMapping("/albums")
 public class AlbumController {
 
     @Autowired
@@ -28,13 +27,13 @@ public class AlbumController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Album> insertAlbum(@RequestBody AlbumDTO albumDTO, String url) {
-        return ResponseEntity.ok(service.save(albumDTO, url));
+    public ResponseEntity<Album> save(@RequestBody AlbumDTO albumDTO, @RequestParam Long userId) {
+        return ResponseEntity.ok(service.save(albumDTO, userId));
     }
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        service.deleteById(id, userDTO);
+    @DeleteMapping("/deleteById")
+    public ResponseEntity<Void> deleteById(@PathVariable Long idAlbum, @RequestParam String userEmail) {
+        service.deleteById(idAlbum, userEmail);
         return ResponseEntity.noContent().build();
     }
 }
