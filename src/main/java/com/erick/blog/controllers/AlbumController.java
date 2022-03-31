@@ -27,9 +27,9 @@ public class AlbumController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PostMapping("/insertAlbum")
+    @PostMapping("/save")
     public ResponseEntity<Album> insertAlbum(@RequestBody AlbumDTO albumDTO, String url) {
-        return ResponseEntity.ok(service.insertAlbum(albumDTO, url));
+        return ResponseEntity.ok(service.save(albumDTO, url));
     }
 
     @DeleteMapping("/deleteById/{id}")

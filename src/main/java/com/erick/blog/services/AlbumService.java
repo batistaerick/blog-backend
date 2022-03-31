@@ -26,7 +26,7 @@ public class AlbumService {
         return repository.findById(id).orElseThrow(() -> new AlbumException("Album not found!"));
     }
 
-    public Album insertAlbum(AlbumDTO albumDTO, String image) {
+    public Album save(AlbumDTO albumDTO, String image) {
         if (image != null) {
             albumDTO.setImage(image);
         }
