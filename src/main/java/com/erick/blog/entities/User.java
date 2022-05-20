@@ -2,7 +2,6 @@ package com.erick.blog.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +15,6 @@ import java.util.List;
 @Table(name = "t_user")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {
 

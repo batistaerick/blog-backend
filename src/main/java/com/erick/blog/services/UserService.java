@@ -2,7 +2,7 @@ package com.erick.blog.services;
 
 import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.User;
-import com.erick.blog.exceptions.UserException;
+import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new UserException("User not found."));
+        return repository.findById(id).orElseThrow(() -> new HandlerException("User not found."));
     }
 
     public User save(UserDTO userDTO) {
@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public User findByEmail(String login) {
-        return repository.findByEmail(login).orElseThrow(() -> new UserException("User not found."));
+        return repository.findByEmail(login).orElseThrow(() -> new HandlerException("User not found."));
     }
 
     public Boolean validatePassword(String login, String password) {
@@ -48,7 +48,7 @@ public class UserService {
             BeanUtils.copyProperties(dto, entity);
             return entity;
         } catch (Exception e) {
-            throw new UserException(e);
+            throw new HandlerException(e);
         }
     }
 }

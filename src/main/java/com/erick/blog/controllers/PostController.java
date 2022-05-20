@@ -16,27 +16,27 @@ public class PostController {
     @Autowired
     private PostService service;
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<Post>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/find-by-id/{id}")
     public ResponseEntity<Post> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/findByTitle/{title}")
+    @GetMapping("/find-by-title/{title}")
     public ResponseEntity<List<Post>> findByTitle(@PathVariable String title) {
         return ResponseEntity.ok(service.findByTitle(title));
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Post> save(@RequestParam Long userId, @RequestBody PostDTO postDTO) {
         return ResponseEntity.ok(service.save(userId, postDTO));
     }
 
-    @DeleteMapping("/deleteById")
+    @DeleteMapping("/delete-by-id")
     public ResponseEntity<Void> delete(@RequestParam Long postId, @RequestParam String userEmail) {
         service.deleteById(postId, userEmail);
         return ResponseEntity.noContent().build();

@@ -16,23 +16,23 @@ public class AlbumController {
     @Autowired
     private AlbumService service;
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<Album>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/find-by-id/{id}")
     public ResponseEntity<Album> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Album> save(@RequestBody AlbumDTO albumDTO, @RequestParam Long userId) {
         return ResponseEntity.ok(service.save(albumDTO, userId));
     }
 
-    @DeleteMapping("/deleteById")
-    public ResponseEntity<Void> deleteById(@PathVariable Long idAlbum, @RequestParam String userEmail) {
+    @DeleteMapping("/delete-by-id")
+    public ResponseEntity<Void> deleteById(@RequestParam Long idAlbum, @RequestParam String userEmail) {
         service.deleteById(idAlbum, userEmail);
         return ResponseEntity.noContent().build();
     }

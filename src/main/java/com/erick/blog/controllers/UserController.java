@@ -17,29 +17,29 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<User>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/find-by-id/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/findByEmail/{email}")
+    @GetMapping("/find-by-email/{email}")
     public ResponseEntity<User> findByEmail(@PathVariable String email) {
         return ResponseEntity.ok(service.findByEmail(email));
     }
 
-    @GetMapping("/validatePassword")
+    @GetMapping("/validate-password")
     public ResponseEntity<Boolean> validatePassword(@RequestParam String email, @RequestParam String password) {
         Boolean valid = service.validatePassword(email, password);
         HttpStatus status = Boolean.TRUE.equals((valid)) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(valid);
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(service.save(userDTO));
     }

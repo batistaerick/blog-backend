@@ -3,7 +3,6 @@ package com.erick.blog.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +17,6 @@ import java.util.List;
 @Table(name = "t_post")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Post implements Serializable {
 

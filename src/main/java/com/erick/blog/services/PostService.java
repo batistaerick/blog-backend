@@ -2,7 +2,7 @@ package com.erick.blog.services;
 
 import com.erick.blog.dtos.PostDTO;
 import com.erick.blog.entities.Post;
-import com.erick.blog.exceptions.PostException;
+import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.PostRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class PostService {
     }
 
     public Post findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new PostException("Post not found!"));
+        return repository.findById(id).orElseThrow(() -> new HandlerException("Post not found!"));
     }
 
     public List<Post> findByTitle(String title) {
@@ -44,11 +44,11 @@ public class PostService {
     public void deleteById(Long postId, String userEmail) {
         try {
             if (!findById(postId).getUser().getEmail().equals(userEmail)) {
-                throw new PostException("Only creator can delete this comment!");
+                throw new HandlerException("Only creator can delete this comment!");
             }
             repository.deleteById(postId);
         } catch (Exception e) {
-            throw new PostException(e);
+            throw new HandlerException(e);
         }
     }
 
@@ -58,7 +58,7 @@ public class PostService {
             BeanUtils.copyProperties(dto, entity);
             return entity;
         } catch (Exception e) {
-            throw new PostException(e);
+            throw new HandlerException(e);
         }
     }
 }

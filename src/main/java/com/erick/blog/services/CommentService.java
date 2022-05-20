@@ -2,7 +2,7 @@ package com.erick.blog.services;
 
 import com.erick.blog.dtos.CommentDTO;
 import com.erick.blog.entities.Comment;
-import com.erick.blog.exceptions.CommentException;
+import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.CommentRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class CommentService {
     }
 
     public Comment findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new CommentException("Comment not found!"));
+        return repository.findById(id).orElseThrow(() -> new HandlerException("Comment not found!"));
     }
 
     public Comment save(Long userId, Long postId, CommentDTO commentDTO) {
@@ -44,11 +44,11 @@ public class CommentService {
     public void deleteById(Long idComment, String userEmail) {
         try {
             if (!findById(idComment).getUser().getEmail().equals(userEmail)) {
-                throw new CommentException("Only creator can delete this comment!");
+                throw new HandlerException("Only creator can delete this comment!");
             }
             repository.deleteById(idComment);
         } catch (Exception e) {
-            throw new CommentException(e);
+            throw new HandlerException(e);
         }
     }
 
@@ -58,7 +58,7 @@ public class CommentService {
             BeanUtils.copyProperties(dto, entity);
             return entity;
         } catch (Exception e) {
-            throw new CommentException(e);
+            throw new HandlerException(e);
         }
     }
 }

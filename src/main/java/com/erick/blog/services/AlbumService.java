@@ -2,7 +2,7 @@ package com.erick.blog.services;
 
 import com.erick.blog.dtos.AlbumDTO;
 import com.erick.blog.entities.Album;
-import com.erick.blog.exceptions.AlbumException;
+import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.AlbumRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class AlbumService {
     }
 
     public Album findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new AlbumException("Album not found!"));
+        return repository.findById(id).orElseThrow(() -> new HandlerException("Album not found!"));
     }
 
     public Album save(AlbumDTO albumDTO, Long userId) {
@@ -36,11 +36,11 @@ public class AlbumService {
     public void deleteById(Long idAlbum, String userEmail) {
         try {
             if (!findById(idAlbum).getUser().getEmail().equals(userEmail)) {
-                throw new AlbumException("Only creator can delete this comment!");
+                throw new HandlerException("Only creator can delete this comment!");
             }
             repository.deleteById(idAlbum);
         } catch (Exception e) {
-            throw new AlbumException(e);
+            throw new HandlerException(e);
         }
     }
 
@@ -50,7 +50,7 @@ public class AlbumService {
             BeanUtils.copyProperties(dto, entity);
             return entity;
         } catch (Exception e) {
-            throw new AlbumException(e);
+            throw new HandlerException(e);
         }
     }
 }

@@ -16,23 +16,23 @@ public class CommentController {
     @Autowired
     private CommentService service;
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<Comment>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/find-by-id/{id}")
     public ResponseEntity<Comment> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Comment> save(@RequestParam Long userId, @RequestParam Long postId,
                                         @RequestBody CommentDTO commentDTO) {
         return ResponseEntity.ok(service.save(userId, postId, commentDTO));
     }
 
-    @DeleteMapping("/deleteById")
+    @DeleteMapping("/delete-by-id")
     public ResponseEntity<Void> deleteById(@RequestParam Long idComment, @RequestParam String userEmail) {
         service.deleteById(idComment, userEmail);
         return ResponseEntity.noContent().build();
