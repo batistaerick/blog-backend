@@ -1,24 +1,23 @@
 package com.erick.blog.services;
 
+import com.erick.blog.converters.PostConverter;
 import com.erick.blog.dtos.PostDTO;
 import com.erick.blog.entities.Post;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.PostRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
 
-    @Autowired
-    private PostRepository repository;
-
-    @Autowired
-    private UserService userService;
+    private final PostRepository repository;
+    private final PostConverter converter;
+    private final UserService userService;
 
     public List<Post> findAll() {
         return repository.findAll();
@@ -33,11 +32,9 @@ public class PostService {
     }
 
     public Post save(Long userId, PostDTO postDTO) {
-        Post post = dtoToEntity(postDTO);
-
+        Post post = converter.dtoToEntity(postDTO);
         post.setDate(Instant.now());
         post.setUser(userService.findById(userId));
-
         return repository.save(post);
     }
 
@@ -52,13 +49,4 @@ public class PostService {
         }
     }
 
-    public Post dtoToEntity(PostDTO dto) {
-        try {
-            Post entity = new Post();
-            BeanUtils.copyProperties(dto, entity);
-            return entity;
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
-    }
 }

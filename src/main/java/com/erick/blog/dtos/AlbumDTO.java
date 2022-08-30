@@ -16,4 +16,5 @@ public class AlbumDTO implements Serializable {
     private Long id;
     private String imageUrl;
     private UserDTO user;
+
 }

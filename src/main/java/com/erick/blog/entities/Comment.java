@@ -39,4 +39,5 @@ public class Comment implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
+
 }

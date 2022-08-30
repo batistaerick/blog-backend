@@ -1,24 +1,23 @@
 package com.erick.blog.services;
 
+import com.erick.blog.converters.UserConverter;
 import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.User;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.UserRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository repository;
-
-    @Autowired
-    private PasswordEncoder encoder;
+    private final UserRepository repository;
+    private final UserConverter converter;
+    private final PasswordEncoder encoder;
 
     public List<User> findAll() {
         return repository.findAll();
@@ -29,7 +28,7 @@ public class UserService {
     }
 
     public User save(UserDTO userDTO) {
-        User user = dtoToEntity(userDTO);
+        User user = converter.dtoToEntity(userDTO);
         user.setPassword(encoder.encode(user.getPassword()));
         return repository.save(user);
     }
@@ -42,13 +41,4 @@ public class UserService {
         return encoder.matches(password, findByEmail(login).getPassword());
     }
 
-    public User dtoToEntity(UserDTO dto) {
-        try {
-            User entity = new User();
-            BeanUtils.copyProperties(dto, entity);
-            return entity;
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
-    }
 }
