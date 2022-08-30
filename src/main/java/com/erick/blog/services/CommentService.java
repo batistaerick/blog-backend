@@ -1,11 +1,11 @@
 package com.erick.blog.services;
 
+import com.erick.blog.converters.CommentConverter;
 import com.erick.blog.dtos.CommentDTO;
 import com.erick.blog.entities.Comment;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.CommentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,7 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository repository;
+    private final CommentConverter converter;
     private final UserService userService;
 
     @Autowired
@@ -31,12 +32,10 @@ public class CommentService {
     }
 
     public Comment save(Long userId, Long postId, CommentDTO commentDTO) {
-
-        Comment comment = dtoToEntity(commentDTO);
+        Comment comment = converter.dtoToEntity(commentDTO);
         comment.setUser(userService.findById(userId));
         comment.setPost(postService.findById(postId));
         comment.setDate(Instant.now());
-
         return repository.save(comment);
     }
 
@@ -51,13 +50,4 @@ public class CommentService {
         }
     }
 
-    public Comment dtoToEntity(CommentDTO dto) {
-        try {
-            Comment entity = new Comment();
-            BeanUtils.copyProperties(dto, entity);
-            return entity;
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
-    }
 }

@@ -19,4 +19,5 @@ public class CommentDTO implements Serializable {
     private Instant date;
     private PostDTO post;
     private UserDTO user;
+
 }

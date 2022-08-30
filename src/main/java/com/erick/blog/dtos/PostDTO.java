@@ -22,4 +22,5 @@ public class PostDTO implements Serializable {
     private String imageUrl;
     private UserDTO user;
     private List<CommentDTO> comments;
+
 }
