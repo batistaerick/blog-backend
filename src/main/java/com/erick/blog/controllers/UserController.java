@@ -19,25 +19,25 @@ public class UserController {
     private final UserService service;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, 'ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<User>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/find-by-id/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, 'ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping("/find-by-email/{email}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, 'ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> findByEmail(@PathVariable String email) {
         return ResponseEntity.ok(service.findByEmail(email));
     }
 
     @GetMapping("/validate-password")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, 'ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Boolean> validatePassword(@RequestParam String email, @RequestParam String password) {
         Boolean valid = service.validatePassword(email, password);
         HttpStatus status = Boolean.TRUE.equals((valid)) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(service.save(userDTO));
     }
