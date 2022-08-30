@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/validate-password")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<Boolean> validatePassword(@RequestParam String email, @RequestParam String password) {
         Boolean valid = service.validatePassword(email, password);
         HttpStatus status = Boolean.TRUE.equals((valid)) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(service.save(userDTO));
     }

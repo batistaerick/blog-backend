@@ -36,6 +36,12 @@ public class User implements UserDetails, Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @ManyToMany
+    @JoinTable(name = "t_users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Post> posts;
@@ -47,12 +53,6 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Album> albums;
-
-    @ManyToMany
-    @JoinTable(name = "t_users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
