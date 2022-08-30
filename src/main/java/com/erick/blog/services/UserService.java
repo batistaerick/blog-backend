@@ -4,21 +4,19 @@ import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.entities.User;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository repository;
-
-    @Autowired
-    private PasswordEncoder encoder;
+    private final UserRepository repository;
+    private final PasswordEncoder encoder;
 
     public List<User> findAll() {
         return repository.findAll();

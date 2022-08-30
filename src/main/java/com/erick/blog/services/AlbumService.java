@@ -4,20 +4,18 @@ import com.erick.blog.dtos.AlbumDTO;
 import com.erick.blog.entities.Album;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.AlbumRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AlbumService {
 
-    @Autowired
-    private AlbumRepository repository;
-
-    @Autowired
-    private UserService userService;
+    private final AlbumRepository repository;
+    private final UserService userService;
 
     public List<Album> findAll() {
         return repository.findAll();

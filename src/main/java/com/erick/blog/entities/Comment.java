@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
@@ -16,10 +14,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Comment implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

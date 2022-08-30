@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -16,14 +17,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String jwt;
 
     private String name;
 
@@ -44,4 +44,40 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Album> albums;
+
+    @ManyToMany
+    @JoinTable(name = "t_users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

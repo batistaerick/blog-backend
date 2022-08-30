@@ -4,21 +4,19 @@ import com.erick.blog.dtos.PostDTO;
 import com.erick.blog.entities.Post;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
 
-    @Autowired
-    private PostRepository repository;
-
-    @Autowired
-    private UserService userService;
+    private final PostRepository repository;
+    private final UserService userService;
 
     public List<Post> findAll() {
         return repository.findAll();

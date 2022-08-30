@@ -4,6 +4,7 @@ import com.erick.blog.dtos.CommentDTO;
 import com.erick.blog.entities.Comment;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.CommentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,11 @@ import java.time.Instant;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
-    @Autowired
-    private CommentRepository repository;
-
-    @Autowired
-    private UserService userService;
+    private final CommentRepository repository;
+    private final UserService userService;
 
     @Autowired
     private PostService postService;
