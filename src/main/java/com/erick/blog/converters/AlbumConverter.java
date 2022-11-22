@@ -19,4 +19,14 @@ public class AlbumConverter {
         }
     }
 
+    public AlbumDTO entityToDto(Album entity) {
+        try {
+            AlbumDTO dto = new AlbumDTO();
+            BeanUtils.copyProperties(entity, dto);
+            return dto;
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
+
 }

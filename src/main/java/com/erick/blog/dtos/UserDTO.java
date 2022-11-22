@@ -24,4 +24,13 @@ public class UserDTO implements Serializable {
     private List<CommentDTO> comments;
     private List<AlbumDTO> albums;
 
+    public UserDTO() {
+    }
+
+    public UserDTO(Long id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 }

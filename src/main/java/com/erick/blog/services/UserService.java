@@ -19,6 +19,12 @@ public class UserService {
     private final UserConverter converter;
     private final PasswordEncoder encoder;
 
+    public User save(UserDTO userDTO) {
+        User user = converter.dtoToEntity(userDTO);
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repository.save(user);
+    }
+
     public List<User> findAll() {
         return repository.findAll();
     }
@@ -27,18 +33,8 @@ public class UserService {
         return repository.findById(id).orElseThrow(() -> new HandlerException("User not found."));
     }
 
-    public User save(UserDTO userDTO) {
-        User user = converter.dtoToEntity(userDTO);
-        user.setPassword(encoder.encode(user.getPassword()));
-        return repository.save(user);
-    }
-
     public User findByEmail(String login) {
         return repository.findByEmail(login).orElseThrow(() -> new HandlerException("User not found."));
-    }
-
-    public Boolean validatePassword(String login, String password) {
-        return encoder.matches(password, findByEmail(login).getPassword());
     }
 
 }
