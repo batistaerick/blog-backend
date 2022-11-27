@@ -83,7 +83,10 @@ class UserControllerTest {
 
     @Test
     void save() throws Exception {
-        UserDTO user = new UserDTO(null, "Testing", "testing@testing.com", "321");
+        UserDTO user = new UserDTO();
+        user.setName("Testing");
+        user.setEmail("testing@testing.com");
+        user.setPassword("321");
 
         mockMvc.perform(post("/users")
                         .contentType(APPLICATION_JSON_UTF8)

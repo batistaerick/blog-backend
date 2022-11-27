@@ -1,6 +1,5 @@
 package com.erick.blog.dtos;
 
-import com.erick.blog.entities.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,18 +18,9 @@ public class UserDTO implements Serializable {
     private String name;
     private String email;
     private String password;
-    private List<Role> roles;
+    private List<RoleDTO> roles;
     private List<PostDTO> posts;
     private List<CommentDTO> comments;
     private List<AlbumDTO> albums;
 
-    public UserDTO() {
-    }
-
-    public UserDTO(Long id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
 }

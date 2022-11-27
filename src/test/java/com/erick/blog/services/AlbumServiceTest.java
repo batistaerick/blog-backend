@@ -1,18 +1,17 @@
 package com.erick.blog.services;
 
-import com.erick.blog.converters.UserConverter;
+import com.erick.blog.converters.AlbumConverter;
+import com.erick.blog.entities.Album;
 import com.erick.blog.entities.User;
 import com.erick.blog.exceptions.HandlerException;
-import com.erick.blog.repositories.UserRepository;
+import com.erick.blog.repositories.AlbumRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,56 +20,48 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
-@Transactional
-class UserServiceTest {
+class AlbumServiceTest {
 
     @MockBean
-    private UserRepository repository;
-    @Autowired
-    private UserService service;
+    private AlbumRepository repository;
 
     @Autowired
-    private UserConverter converter;
+    private AlbumService service;
 
     @Autowired
-    private PasswordEncoder encoder;
+    private AlbumConverter converter;
 
-    private User user;
+    private Album album;
 
     @BeforeEach
     void setUpBeforeEach() {
-        user = new User();
+        User user = new User();
         user.setId(1L);
-        user.setName("Erick");
         user.setEmail("erick@erick.com");
-        user.setPassword(encoder.encode("123"));
+        album = new Album();
+        album.setId(1L);
+        album.setImageUrl("www.url-testing.com.br");
+        album.setUser(user);
     }
 
     @Test
     void findAll() {
-        List<User> expected = List.of(user, new User());
+        List<Album> expected = List.of(album, new Album());
         when(repository.findAll()).thenReturn(expected);
-        assertIterableEquals(expected, service.findAll(), "Should return a list of users");
+        assertIterableEquals(expected, service.findAll(), "Should return a list of albums");
         verify(repository, times(1)).findAll();
     }
 
     @Test
     void findById() {
         when(repository.findById(1L))
-                .thenThrow(new HandlerException("User Not Found."))
-                .thenReturn(Optional.of(user));
+                .thenThrow(new HandlerException("Album Not Found."))
+                .thenReturn(Optional.of(album));
 
         assertThrows(HandlerException.class, () -> service.findById(1L));
-        assertEquals(user, service.findById(1L), "Should return a single user");
+        assertEquals(album, service.findById(1L), "Should return a single album");
 
         verify(repository, times(2)).findById(1L);
-    }
-
-    @Test
-    void findByEmail() {
-        when(repository.findByEmail("erick@erick.com")).thenReturn(Optional.of(user));
-        assertEquals(user, service.findByEmail("erick@erick.com"),
-                "Should return a single user");
     }
 
 }

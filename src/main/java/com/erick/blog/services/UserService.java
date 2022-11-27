@@ -22,7 +22,8 @@ public class UserService {
     public User save(UserDTO userDTO) {
         User user = converter.dtoToEntity(userDTO);
         user.setPassword(encoder.encode(user.getPassword()));
-        return repository.save(user);
+        User test = repository.save(user);
+        return test;
     }
 
     public List<User> findAll() {
