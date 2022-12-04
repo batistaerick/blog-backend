@@ -1,5 +1,7 @@
 package com.erick.blog.controllers;
 
+import com.erick.blog.dtos.PostDTO;
+import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.services.PostService;
 import com.erick.blog.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,12 +16,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.Instant;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -70,6 +76,7 @@ class PostControllerTest {
     }
 
     @Test
+    @Sql("/scripts/insertPostData.sql")
     void findAll() throws Exception {
         mockMvc.perform(get("/posts"))
                 .andExpect(status().isUnauthorized());
@@ -78,7 +85,7 @@ class PostControllerTest {
                         .with(httpBasic("erick@erick.com", "password")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("$", hasSize(3)));
     }
 
     @Test
@@ -106,11 +113,41 @@ class PostControllerTest {
     }
 
     @Test
-    void save() {
+    void save() throws Exception {
+        PostDTO dto = new PostDTO();
+        dto.setBody("Hi body");
+        dto.setImageUrl("stuffs.stuffs");
+        dto.setDate(Instant.now());
+        dto.setTitle("Hi title");
+
+        mockMvc.perform(post("/posts").param("userId", "1")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(post("/posts").param("userId", "1")
+                        .with(httpBasic("erick@erick.com", "password"))
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk());
+
+        assertNotNull(service.findById(1L), "Should return a valid post");
     }
 
     @Test
-    void delete() {
+    void deleteById() throws Exception {
+        mockMvc.perform(delete("/posts/delete-by-id")
+                        .param("postId", "1")
+                        .param("userEmail", "erick@erick.com"))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(delete("/posts/delete-by-id")
+                        .param("postId", "1")
+                        .param("userEmail", "erick@erick.com")
+                        .with(httpBasic("erick@erick.com", "password")))
+                .andExpect(status().isNoContent());
+
+        assertThrows(HandlerException.class, () -> service.findById(1L));
     }
 
 }

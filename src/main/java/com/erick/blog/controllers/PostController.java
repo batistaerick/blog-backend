@@ -43,7 +43,7 @@ public class PostController {
 
     @DeleteMapping("/delete-by-id")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> delete(@RequestParam Long postId, @RequestParam String userEmail) {
+    public ResponseEntity<Void> deleteById(@RequestParam Long postId, @RequestParam String userEmail) {
         service.deleteById(postId, userEmail);
         return ResponseEntity.noContent().build();
     }

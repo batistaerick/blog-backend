@@ -78,23 +78,23 @@ class UserControllerTest {
 
     @Test
     void save() throws Exception {
-        UserDTO user = new UserDTO();
-        user.setName("Testing");
-        user.setEmail("testing@testing.com");
-        user.setPassword("321");
+        UserDTO dto = new UserDTO();
+        dto.setName("Testing");
+        dto.setEmail("testing@testing.com");
+        dto.setPassword("321");
 
         mockMvc.perform(post("/users")
                         .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(user)))
+                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isUnauthorized());
 
         mockMvc.perform(post("/users")
                         .with(httpBasic("erick@erick.com", "password"))
                         .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(user)))
+                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
 
-        assertNotNull(service.findByEmail("testing@testing.com"), "Should return a valide user");
+        assertNotNull(service.findByEmail("testing@testing.com"), "Should return a valid user");
     }
 
     @Test
