@@ -3,7 +3,6 @@ package com.erick.blog.controllers;
 import com.erick.blog.dtos.PostDTO;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.services.PostService;
-import com.erick.blog.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,9 +49,6 @@ class PostControllerTest {
 
     @Autowired
     private PostService service;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private JdbcTemplate jdbc;

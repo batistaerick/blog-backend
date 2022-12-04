@@ -18,6 +18,12 @@ public class AlbumService {
     private final AlbumConverter converter;
     private final UserService userService;
 
+    public Album save(AlbumDTO albumDTO, Long userId) {
+        Album album = converter.dtoToEntity(albumDTO);
+        album.setUser(userService.findById(userId));
+        return repository.save(album);
+    }
+
     public List<Album> findAll() {
         return repository.findAll();
     }
@@ -26,18 +32,12 @@ public class AlbumService {
         return repository.findById(id).orElseThrow(() -> new HandlerException("Album not found!"));
     }
 
-    public Album save(AlbumDTO albumDTO, Long userId) {
-        Album album = converter.dtoToEntity(albumDTO);
-        album.setUser(userService.findById(userId));
-        return repository.save(album);
-    }
-
-    public void deleteById(Long idAlbum, String userEmail) {
+    public void deleteById(Long albumId, String userEmail) {
         try {
-            if (!findById(idAlbum).getUser().getEmail().equals(userEmail)) {
+            if (!findById(albumId).getUser().getEmail().equals(userEmail)) {
                 throw new HandlerException("Only creator can delete this comment!");
             }
-            repository.deleteById(idAlbum);
+            repository.deleteById(albumId);
         } catch (Exception e) {
             throw new HandlerException(e);
         }

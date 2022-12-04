@@ -39,12 +39,12 @@ public class CommentService {
         return repository.save(comment);
     }
 
-    public void deleteById(Long idComment, String userEmail) {
+    public void deleteById(Long commentId, String userEmail) {
         try {
-            if (!findById(idComment).getUser().getEmail().equals(userEmail)) {
+            if (!findById(commentId).getUser().getEmail().equals(userEmail)) {
                 throw new HandlerException("Only creator can delete this comment!");
             }
-            repository.deleteById(idComment);
+            repository.deleteById(commentId);
         } catch (Exception e) {
             throw new HandlerException(e);
         }

@@ -17,6 +17,13 @@ public class CommentController {
 
     private final CommentService service;
 
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Comment> save(@RequestParam Long userId, @RequestParam Long postId,
+                                        @RequestBody CommentDTO commentDTO) {
+        return ResponseEntity.ok(service.save(userId, postId, commentDTO));
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Comment>> findAll() {
@@ -29,17 +36,10 @@ public class CommentController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Comment> save(@RequestParam Long userId, @RequestParam Long postId,
-                                        @RequestBody CommentDTO commentDTO) {
-        return ResponseEntity.ok(service.save(userId, postId, commentDTO));
-    }
-
     @DeleteMapping("/delete-by-id")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteById(@RequestParam Long idComment, @RequestParam String userEmail) {
-        service.deleteById(idComment, userEmail);
+    public ResponseEntity<Void> deleteById(@RequestParam Long commentId, @RequestParam String userEmail) {
+        service.deleteById(commentId, userEmail);
         return ResponseEntity.noContent().build();
     }
 
