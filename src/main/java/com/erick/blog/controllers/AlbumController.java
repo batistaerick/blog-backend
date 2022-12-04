@@ -23,7 +23,7 @@ public class AlbumController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/find-by-id/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Album> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));

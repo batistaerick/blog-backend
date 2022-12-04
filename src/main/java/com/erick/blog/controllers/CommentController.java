@@ -23,7 +23,7 @@ public class CommentController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/find-by-id/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Comment> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));

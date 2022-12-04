@@ -4,6 +4,7 @@ import com.erick.blog.converters.UserConverter;
 import com.erick.blog.entities.User;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +26,7 @@ class UserServiceTest {
 
     @MockBean
     private UserRepository repository;
+
     @Autowired
     private UserService service;
 

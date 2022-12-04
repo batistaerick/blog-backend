@@ -1,11 +1,11 @@
 package com.erick.blog.entities;
 
 import com.erick.blog.enums.RoleName;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 
