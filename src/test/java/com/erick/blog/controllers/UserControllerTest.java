@@ -92,7 +92,7 @@ class UserControllerTest {
                         .with(httpBasic("erick@erick.com", "password"))
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         assertNotNull(service.findByEmail("testing@testing.com"), "Should return a valid user");
     }

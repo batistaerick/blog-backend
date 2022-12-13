@@ -72,6 +72,25 @@ class AlbumControllerTest {
     }
 
     @Test
+    void save() throws Exception {
+        AlbumDTO dto = new AlbumDTO();
+        dto.setImageUrl("test.url.com");
+
+        mockMvc.perform(post("/albums").param("userId", "1")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(post("/albums").param("userId", "1")
+                        .with(httpBasic("erick@erick.com", "password"))
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isCreated());
+
+        assertNotNull(service.findById(1L), "Should return a valid album");
+    }
+
+    @Test
     @Sql("/scripts/insertAlbumData.sql")
     void findAll() throws Exception {
         mockMvc.perform(get("/albums"))
@@ -94,25 +113,6 @@ class AlbumControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
         assertNotNull(service.findById(1L), "Should return a non empty album");
-    }
-
-    @Test
-    void save() throws Exception {
-        AlbumDTO dto = new AlbumDTO();
-        dto.setImageUrl("test.url.com");
-
-        mockMvc.perform(post("/albums").param("userId", "1")
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isUnauthorized());
-
-        mockMvc.perform(post("/albums").param("userId", "1")
-                        .with(httpBasic("erick@erick.com", "password"))
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk());
-
-        assertNotNull(service.findById(1L), "Should return a valid album");
     }
 
     @Test

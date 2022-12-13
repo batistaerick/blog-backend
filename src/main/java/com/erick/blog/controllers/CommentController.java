@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -19,9 +21,16 @@ public class CommentController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Comment> save(@RequestParam Long userId, @RequestParam Long postId,
+    public ResponseEntity<Comment> save(@RequestParam Long userId,
+                                        @RequestParam Long postId,
                                         @RequestBody CommentDTO commentDTO) {
-        return ResponseEntity.ok(service.save(userId, postId, commentDTO));
+        Comment comment = service.save(userId, postId, commentDTO);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(comment.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(comment);
     }
 
     @GetMapping

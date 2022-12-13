@@ -82,6 +82,30 @@ class CommentControllerTest {
     }
 
     @Test
+    void save() throws Exception {
+        CommentDTO dto = new CommentDTO();
+        dto.setText("Comment stuffs");
+        dto.setDate(Instant.now());
+
+        mockMvc.perform(post("/comments")
+                        .param("userId", "1")
+                        .param("postId", "1")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(post("/comments")
+                        .param("userId", "1")
+                        .param("postId", "1")
+                        .with(httpBasic("erick@erick.com", "password"))
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isCreated());
+
+        assertNotNull(service.findById(1L), "Should return a valid post");
+    }
+
+    @Test
     @Sql("/scripts/insertCommentData.sql")
     void findAll() throws Exception {
         mockMvc.perform(get("/comments"))
@@ -107,30 +131,6 @@ class CommentControllerTest {
     }
 
     @Test
-    void save() throws Exception {
-        CommentDTO dto = new CommentDTO();
-        dto.setText("Comment stuffs");
-        dto.setDate(Instant.now());
-
-        mockMvc.perform(post("/comments")
-                        .param("userId", "1")
-                        .param("postId", "1")
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isUnauthorized());
-
-        mockMvc.perform(post("/comments")
-                        .param("userId", "1")
-                        .param("postId", "1")
-                        .with(httpBasic("erick@erick.com", "password"))
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk());
-
-        assertNotNull(service.findById(1L), "Should return a valid post");
-    }
-
-    @Test
     void deleteById() throws Exception {
         mockMvc.perform(delete("/comments/delete-by-id")
                         .param("commentId", "1")
@@ -145,4 +145,5 @@ class CommentControllerTest {
 
         assertThrows(HandlerException.class, () -> service.findById(1L));
     }
+
 }

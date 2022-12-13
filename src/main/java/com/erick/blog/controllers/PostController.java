@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,6 +18,18 @@ import java.util.List;
 public class PostController {
 
     private final PostService service;
+
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Post> save(@RequestParam Long userId, @RequestBody PostDTO postDTO) {
+        Post post = service.save(userId, postDTO);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(post);
+    }
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -33,12 +47,6 @@ public class PostController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Post>> findByTitle(@PathVariable String title) {
         return ResponseEntity.ok(service.findByTitle(title));
-    }
-
-    @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Post> save(@RequestParam Long userId, @RequestBody PostDTO postDTO) {
-        return ResponseEntity.ok(service.save(userId, postDTO));
     }
 
     @DeleteMapping("/delete-by-id")

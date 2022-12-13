@@ -72,6 +72,28 @@ class PostControllerTest {
     }
 
     @Test
+    void save() throws Exception {
+        PostDTO dto = new PostDTO();
+        dto.setBody("Hi body");
+        dto.setImageUrl("stuffs.stuffs");
+        dto.setDate(Instant.now());
+        dto.setTitle("Hi title");
+
+        mockMvc.perform(post("/posts").param("userId", "1")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(post("/posts").param("userId", "1")
+                        .with(httpBasic("erick@erick.com", "password"))
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isCreated());
+
+        assertNotNull(service.findById(1L), "Should return a valid post");
+    }
+
+    @Test
     @Sql("/scripts/insertPostData.sql")
     void findAll() throws Exception {
         mockMvc.perform(get("/posts"))
@@ -106,28 +128,6 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
         assertNotNull(service.findById(1L), "Should return a non empty post!");
-    }
-
-    @Test
-    void save() throws Exception {
-        PostDTO dto = new PostDTO();
-        dto.setBody("Hi body");
-        dto.setImageUrl("stuffs.stuffs");
-        dto.setDate(Instant.now());
-        dto.setTitle("Hi title");
-
-        mockMvc.perform(post("/posts").param("userId", "1")
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isUnauthorized());
-
-        mockMvc.perform(post("/posts").param("userId", "1")
-                        .with(httpBasic("erick@erick.com", "password"))
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk());
-
-        assertNotNull(service.findById(1L), "Should return a valid post");
     }
 
     @Test
