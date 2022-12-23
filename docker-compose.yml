@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_PASSWORD=123456789
+    networks:
+      - backend
+
+  springboot:
+    depends_on:
+      - postgres
+    build: .
+    image: blog-backend:v1
+    ports:
+      - "8080:8080"
+    volumes:
+      - spring_data:/tmp
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/test
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456789
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - backend
+
+volumes:
+  postgres_data: { }
+  spring_data: { }
+
+networks:
+  backend:
+    driver: bridge

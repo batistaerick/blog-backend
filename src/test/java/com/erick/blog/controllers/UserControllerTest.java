@@ -50,6 +50,9 @@ class UserControllerTest {
     @Value("${sql.delete.user}")
     private String deleteUser;
 
+    @Value("${sql.alterTable.user}")
+    private String restartUserIdentity;
+
     @Autowired
     private UserService service;
 
@@ -74,6 +77,7 @@ class UserControllerTest {
         jdbc.execute(deleteRoleUser);
         jdbc.execute(deleteRole);
         jdbc.execute(deleteUser);
+        jdbc.execute(restartUserIdentity);
     }
 
     @Test

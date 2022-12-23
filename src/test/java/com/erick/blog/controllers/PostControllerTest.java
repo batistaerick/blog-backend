@@ -47,6 +47,12 @@ class PostControllerTest {
     @Value("${sql.delete.post}")
     private String deletePost;
 
+    @Value("${sql.alterTable.user}")
+    private String restartUserIdentity;
+
+    @Value("${sql.alterTable.post}")
+    private String restartPostIdentity;
+
     @Autowired
     private PostService service;
 
@@ -69,6 +75,8 @@ class PostControllerTest {
     void setUpAfterAll() {
         jdbc.execute(deletePost);
         jdbc.execute(deleteUser);
+        jdbc.execute(restartUserIdentity);
+        jdbc.execute(restartPostIdentity);
     }
 
     @Test

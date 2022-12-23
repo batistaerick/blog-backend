@@ -47,6 +47,9 @@ class AlbumControllerTest {
     @Value("${sql.delete.album}")
     private String deleteAlbum;
 
+    @Value("${sql.alterTable.user}")
+    private String restartUserIdentity;
+
     @Autowired
     private AlbumService service;
 
@@ -69,6 +72,7 @@ class AlbumControllerTest {
     void setUpAfterAll() {
         jdbc.execute(deleteAlbum);
         jdbc.execute(deleteUser);
+        jdbc.execute(restartUserIdentity);
     }
 
     @Test

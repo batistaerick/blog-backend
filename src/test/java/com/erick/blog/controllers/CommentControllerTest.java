@@ -55,6 +55,9 @@ class CommentControllerTest {
     @Value("${sql.delete.comment}")
     private String deleteComment;
 
+    @Value("${sql.alterTable.user}")
+    private String restartUserIdentity;
+
     @Autowired
     private CommentService service;
 
@@ -79,6 +82,7 @@ class CommentControllerTest {
         jdbc.execute(deleteComment);
         jdbc.execute(deletePost);
         jdbc.execute(deleteUser);
+        jdbc.execute(restartUserIdentity);
     }
 
     @Test
