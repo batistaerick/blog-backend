@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.Instant;
@@ -62,10 +63,11 @@ class PostServiceTest {
 
     @Test
     void findAll() {
-        List<Post> expected = List.of(post, new Post());
-        when(repository.findAll()).thenReturn(expected);
-        assertIterableEquals(expected, service.findAll(), "Should return a list of posts");
-        verify(repository, times(1)).findAll();
+        Pageable pageable = PageRequest.of(1, 2, Sort.by("title"));
+        List<Post> list = List.of(post, new Post());
+        Page<Post> expected = new PageImpl<>(list);
+        when(repository.findAll(pageable)).thenReturn(expected);
+        assertIterableEquals(expected, service.findAll(pageable), "Should return a list of posts");
     }
 
     @Test
@@ -76,7 +78,6 @@ class PostServiceTest {
 
         assertThrows(HandlerException.class, () -> service.findById(1L));
         assertEquals(post, service.findById(1L), "Should return a single post");
-
         verify(repository, times(2)).findById(1L);
     }
 
@@ -88,7 +89,6 @@ class PostServiceTest {
         List<Post> expected = List.of(post, entity);
 
         when(repository.findAll()).thenReturn(expected);
-
         assertIterableEquals(expected, service.findByTitle("Title"),
                 "Should be equal");
     }

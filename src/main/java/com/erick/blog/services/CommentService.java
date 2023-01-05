@@ -7,10 +7,11 @@ import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +24,8 @@ public class CommentService {
     @Autowired
     private PostService postService;
 
-    public List<Comment> findAll() {
-        return repository.findAll();
+    public Page<Comment> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Comment findById(Long id) {
