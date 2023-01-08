@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class Role implements Serializable {
+public class RoleDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

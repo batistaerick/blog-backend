@@ -4,10 +4,14 @@ import com.erick.blog.dtos.PostDTO;
 import com.erick.blog.entities.Post;
 import com.erick.blog.services.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,13 +21,25 @@ public class PostController {
 
     private final PostService service;
 
-    @GetMapping
+    @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Post>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<Post> save(@RequestParam Long userId, @RequestBody PostDTO postDTO) {
+        Post post = service.save(userId, postDTO);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(post);
     }
 
-    @GetMapping("/find-by-id/{id}")
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Page<Post>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(service.findAll(pageable));
+    }
+
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Post> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
@@ -35,15 +51,9 @@ public class PostController {
         return ResponseEntity.ok(service.findByTitle(title));
     }
 
-    @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Post> save(@RequestParam Long userId, @RequestBody PostDTO postDTO) {
-        return ResponseEntity.ok(service.save(userId, postDTO));
-    }
-
     @DeleteMapping("/delete-by-id")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> delete(@RequestParam Long postId, @RequestParam String userEmail) {
+    public ResponseEntity<Void> deleteById(@RequestParam Long postId, @RequestParam String userEmail) {
         service.deleteById(postId, userEmail);
         return ResponseEntity.noContent().build();
     }

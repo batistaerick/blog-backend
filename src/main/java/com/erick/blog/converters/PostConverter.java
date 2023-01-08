@@ -19,4 +19,14 @@ public class PostConverter {
         }
     }
 
+    public PostDTO entityToDto(Post entity) {
+        try {
+            PostDTO dto = new PostDTO();
+            BeanUtils.copyProperties(entity, dto);
+            return dto;
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
+
 }

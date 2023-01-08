@@ -19,4 +19,14 @@ public class CommentConverter {
         }
     }
 
+    public CommentDTO entityToDto(Comment entity) {
+        try {
+            CommentDTO dto = new CommentDTO();
+            BeanUtils.copyProperties(entity, dto);
+            return dto;
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
+
 }

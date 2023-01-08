@@ -6,6 +6,8 @@ import com.erick.blog.entities.Post;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -19,8 +21,8 @@ public class PostService {
     private final PostConverter converter;
     private final UserService userService;
 
-    public List<Post> findAll() {
-        return repository.findAll();
+    public Page<Post> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Post findById(Long id) {
@@ -28,7 +30,7 @@ public class PostService {
     }
 
     public List<Post> findByTitle(String title) {
-        return findAll().stream().filter(post -> post.getTitle().contains(title)).toList();
+        return repository.findAll().stream().filter(post -> post.getTitle().contains(title)).toList();
     }
 
     public Post save(Long userId, PostDTO postDTO) {
