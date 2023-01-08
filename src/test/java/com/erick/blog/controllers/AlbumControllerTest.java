@@ -5,10 +5,7 @@ import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.services.AlbumService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,26 +23,30 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Order(4)
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
-@TestPropertySource("/application-test.properties")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestPropertySource("/application-test.properties")
 class AlbumControllerTest {
 
     private static final MediaType APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON;
 
-    @Value("${sql.creation.user}")
-    private String createUser;
-
     @Value("${sql.creation.album}")
     private String createAlbum;
+
+    @Value("${sql.creation.user}")
+    private String createUser;
 
     @Value("${sql.delete.user}")
     private String deleteUser;
 
     @Value("${sql.delete.album}")
     private String deleteAlbum;
+
+    @Value("${sql.alterTable.album}")
+    private String restartAlbumIdentity;
 
     @Value("${sql.alterTable.user}")
     private String restartUserIdentity;
@@ -72,6 +73,7 @@ class AlbumControllerTest {
     void setUpAfterAll() {
         jdbc.execute(deleteAlbum);
         jdbc.execute(deleteUser);
+        jdbc.execute(restartAlbumIdentity);
         jdbc.execute(restartUserIdentity);
     }
 
@@ -86,7 +88,7 @@ class AlbumControllerTest {
                 .andExpect(status().isUnauthorized());
 
         mockMvc.perform(post("/albums").param("userId", "1")
-                        .with(httpBasic("erick@erick.com", "password"))
+                        .with(httpBasic("java@java.com", "password"))
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isCreated());
@@ -101,7 +103,7 @@ class AlbumControllerTest {
                 .andExpect(status().isUnauthorized());
 
         mockMvc.perform(get("/albums")
-                        .with(httpBasic("erick@erick.com", "password")))
+                        .with(httpBasic("java@java.com", "password")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(3)));
@@ -113,7 +115,7 @@ class AlbumControllerTest {
                 .andExpect(status().isUnauthorized());
 
         mockMvc.perform(get("/albums/{id}", 1L)
-                        .with(httpBasic("erick@erick.com", "password")))
+                        .with(httpBasic("java@java.com", "password")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
         assertNotNull(service.findById(1L), "Should return a non empty album");
@@ -123,13 +125,13 @@ class AlbumControllerTest {
     void deleteById() throws Exception {
         mockMvc.perform(delete("/albums/delete-by-id")
                         .param("postId", "1")
-                        .param("userEmail", "erick@erick.com"))
+                        .param("userEmail", "java@java.com"))
                 .andExpect(status().isUnauthorized());
 
         mockMvc.perform(delete("/albums/delete-by-id")
                         .param("albumId", "1")
-                        .param("userEmail", "erick@erick.com")
-                        .with(httpBasic("erick@erick.com", "password")))
+                        .param("userEmail", "java@java.com")
+                        .with(httpBasic("java@java.com", "password")))
                 .andExpect(status().isNoContent());
 
         assertThrows(HandlerException.class, () -> service.findById(1L));

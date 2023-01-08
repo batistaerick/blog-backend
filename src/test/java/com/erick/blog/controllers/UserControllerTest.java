@@ -3,10 +3,7 @@ package com.erick.blog.controllers;
 import com.erick.blog.dtos.UserDTO;
 import com.erick.blog.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,10 +21,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Order(1)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource("/application-test.properties")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestPropertySource("/application-test.properties")
 class UserControllerTest {
 
     private static final MediaType APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON;
@@ -83,8 +81,8 @@ class UserControllerTest {
     @Test
     void save() throws Exception {
         UserDTO dto = new UserDTO();
-        dto.setName("Testing");
-        dto.setEmail("testing@testing.com");
+        dto.setName("Save");
+        dto.setEmail("save@save.com");
         dto.setPassword("321");
 
         mockMvc.perform(post("/users")
@@ -93,12 +91,12 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized());
 
         mockMvc.perform(post("/users")
-                        .with(httpBasic("erick@erick.com", "password"))
+                        .with(httpBasic("java@java.com", "password"))
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isCreated());
 
-        assertNotNull(service.findByEmail("testing@testing.com"), "Should return a valid user");
+        assertNotNull(service.findByEmail("save@save.com"), "Should return a valid user");
     }
 
     @Test
@@ -108,7 +106,7 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized());
 
         mockMvc.perform(get("/users")
-                        .with(httpBasic("erick@erick.com", "password")))
+                        .with(httpBasic("java@java.com", "password")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(3)));
@@ -120,7 +118,7 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized());
 
         mockMvc.perform(get("/users/{id}", 1L)
-                        .with(httpBasic("erick@erick.com", "password")))
+                        .with(httpBasic("java@java.com", "password")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
         assertNotNull(service.findById(1L), "Should return a non empty user!");
@@ -128,15 +126,15 @@ class UserControllerTest {
 
     @Test
     void findByEmail() throws Exception {
-        mockMvc.perform(get("/find-by-email/{email}", "erick@erick.com"))
+        mockMvc.perform(get("/find-by-email/{email}", "java@java.com"))
                 .andExpect(status().isUnauthorized());
 
-        mockMvc.perform(get("/users/find-by-email/{email}", "erick@erick.com")
-                        .with(httpBasic("erick@erick.com", "password")))
+        mockMvc.perform(get("/users/find-by-email/{email}", "java@java.com")
+                        .with(httpBasic("java@java.com", "password")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
 
-        assertNotNull(service.findByEmail("erick@erick.com"), "Should return a non empty user!");
+        assertNotNull(service.findByEmail("java@java.com"), "Should return a non empty user!");
     }
 
 }

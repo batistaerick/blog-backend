@@ -60,10 +60,8 @@ class UserServiceTest {
         when(repository.findById(1L))
                 .thenThrow(new HandlerException("User Not Found."))
                 .thenReturn(Optional.of(user));
-
         assertThrows(HandlerException.class, () -> service.findById(1L));
         assertEquals(user, service.findById(1L), "Should return a single user");
-
         verify(repository, times(2)).findById(1L);
     }
 

@@ -4,13 +4,14 @@ import com.erick.blog.dtos.CommentDTO;
 import com.erick.blog.entities.Comment;
 import com.erick.blog.services.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
@@ -35,8 +36,8 @@ public class CommentController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Comment>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<Page<Comment>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(service.findAll(pageable));
     }
 
     @GetMapping("/{id}")

@@ -4,6 +4,8 @@ import com.erick.blog.dtos.PostDTO;
 import com.erick.blog.entities.Post;
 import com.erick.blog.services.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +35,8 @@ public class PostController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Post>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<Page<Post>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(service.findAll(pageable));
     }
 
     @GetMapping("/{id}")

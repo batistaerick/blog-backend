@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.Instant;
@@ -59,10 +63,11 @@ class CommentServiceTest {
 
     @Test
     void findAll() {
-        List<Comment> expected = List.of(comment, new Comment());
-        when(repository.findAll()).thenReturn(expected);
-        assertIterableEquals(expected, service.findAll(), "Should return a list of comments");
-        verify(repository, times(1)).findAll();
+        Pageable pageable = PageRequest.of(0, 2);
+        List<Comment> list = List.of(comment, new Comment());
+        Page<Comment> expected = new PageImpl<>(list, pageable, 2);
+        when(repository.findAll(pageable)).thenReturn(expected);
+        assertIterableEquals(expected, service.findAll(pageable), "Should return a list of comments");
     }
 
     @Test
@@ -70,10 +75,8 @@ class CommentServiceTest {
         when(repository.findById(1L))
                 .thenThrow(new HandlerException("Comment Not Found."))
                 .thenReturn(Optional.of(comment));
-
         assertThrows(HandlerException.class, () -> service.findById(1L));
         assertEquals(comment, service.findById(1L), "Should return a single comment");
-
         verify(repository, times(2)).findById(1L);
     }
 
