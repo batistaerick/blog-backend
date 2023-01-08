@@ -44,14 +44,23 @@ class CommentControllerTest {
     @Value("${sql.creation.comment}")
     private String createComment;
 
-    @Value("${sql.truncate.user}")
-    private String truncateUser;
+    @Value("${sql.delete.comment}")
+    private String deleteComment;
 
-    @Value("${sql.truncate.post}")
-    private String truncatePost;
+    @Value("${sql.delete.post}")
+    private String deletePost;
 
-    @Value("${sql.truncate.comment}")
-    private String truncateComment;
+    @Value("${sql.delete.user}")
+    private String deleteUser;
+
+    @Value("${sql.alterTable.comment}")
+    private String restartCommentIdentity;
+
+    @Value("${sql.alterTable.post}")
+    private String restartPostIdentity;
+
+    @Value("${sql.alterTable.user}")
+    private String restartUserIdentity;
 
     @Autowired
     private CommentService service;
@@ -74,9 +83,12 @@ class CommentControllerTest {
 
     @AfterAll
     void setUpAfterAll() {
-        jdbc.execute(truncateComment);
-        jdbc.execute(truncatePost);
-        jdbc.execute(truncateUser);
+        jdbc.execute(deleteComment);
+        jdbc.execute(deletePost);
+        jdbc.execute(deleteUser);
+        jdbc.execute(restartCommentIdentity);
+        jdbc.execute(restartPostIdentity);
+        jdbc.execute(restartUserIdentity);
     }
 
     @Test

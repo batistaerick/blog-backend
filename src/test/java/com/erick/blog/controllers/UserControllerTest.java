@@ -39,8 +39,17 @@ class UserControllerTest {
     @Value("${sql.creation.role-user}")
     private String createRoleUser;
 
-    @Value("${sql.truncate.user}")
-    private String truncateUser;
+    @Value("${sql.delete.role}")
+    private String deleteRole;
+
+    @Value("${sql.delete.role-user}")
+    private String deleteRoleUser;
+
+    @Value("${sql.delete.user}")
+    private String deleteUser;
+
+    @Value("${sql.alterTable.user}")
+    private String restartUserIdentity;
 
     @Autowired
     private UserService service;
@@ -63,7 +72,10 @@ class UserControllerTest {
 
     @AfterAll
     void setUpAfterAll() {
-        jdbc.execute(truncateUser);
+        jdbc.execute(deleteRoleUser);
+        jdbc.execute(deleteRole);
+        jdbc.execute(deleteUser);
+        jdbc.execute(restartUserIdentity);
     }
 
     @Test

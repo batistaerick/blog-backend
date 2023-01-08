@@ -39,11 +39,17 @@ class AlbumControllerTest {
     @Value("${sql.creation.user}")
     private String createUser;
 
-    @Value("${sql.truncate.album}")
-    private String truncateAlbum;
+    @Value("${sql.delete.user}")
+    private String deleteUser;
 
-    @Value("${sql.truncate.user}")
-    private String truncateUser;
+    @Value("${sql.delete.album}")
+    private String deleteAlbum;
+
+    @Value("${sql.alterTable.album}")
+    private String restartAlbumIdentity;
+
+    @Value("${sql.alterTable.user}")
+    private String restartUserIdentity;
 
     @Autowired
     private AlbumService service;
@@ -65,8 +71,10 @@ class AlbumControllerTest {
 
     @AfterAll
     void setUpAfterAll() {
-        jdbc.execute(truncateAlbum);
-        jdbc.execute(truncateUser);
+        jdbc.execute(deleteAlbum);
+        jdbc.execute(deleteUser);
+        jdbc.execute(restartAlbumIdentity);
+        jdbc.execute(restartUserIdentity);
     }
 
     @Test

@@ -33,17 +33,23 @@ class PostControllerTest {
 
     private static final MediaType APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON;
 
-    @Value("${sql.creation.post}")
-    private String createPost;
-
     @Value("${sql.creation.user}")
     private String createUser;
 
-    @Value("${sql.truncate.user}")
-    private String truncateUser;
+    @Value("${sql.creation.post}")
+    private String createPost;
 
-    @Value("${sql.truncate.post}")
-    private String truncatePost;
+    @Value("${sql.delete.post}")
+    private String deletePost;
+
+    @Value("${sql.delete.user}")
+    private String deleteUser;
+
+    @Value("${sql.alterTable.post}")
+    private String restartPostIdentity;
+
+    @Value("${sql.alterTable.user}")
+    private String restartUserIdentity;
 
     @Autowired
     private PostService service;
@@ -65,8 +71,10 @@ class PostControllerTest {
 
     @AfterAll
     void setUpAfterAll() {
-        jdbc.execute(truncatePost);
-        jdbc.execute(truncateUser);
+        jdbc.execute(deletePost);
+        jdbc.execute(deleteUser);
+        jdbc.execute(restartPostIdentity);
+        jdbc.execute(restartUserIdentity);
     }
 
     @Test
