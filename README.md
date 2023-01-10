@@ -1,17 +1,34 @@
-# Blog Back-end
+# Blog
+
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites)
+3. [How to use](#how-to-use)
+    - [With Docker](#with-docker)
+    - [With Maven](#with-maven)
+4. [Swagger](#swagger)
+5. [Credits](#credits)
+
+# Introduction
 
 A monolithic REST API with the ability to create users, image albums, posts and comments on posts.
 
-# Technologies used
+# Prerequisites
 
-- Java
-- Spring-boot
+To run locally you need:
+
+- Java 17
 - Maven
-- PostgreSQL
+- PostgreSQL - Need to reset the environments in ***resources/application.properties*** with your settings
 
-# How to use:
+# How to use
 
-### Run the following command in your terminal:
+You need a username (email) and password to request end-points with Basic Auth.
+
+A default user will be created on first run of the application with the following login information so you can test it
+out:
+
+- User: `test@test.com`
+- Password: `password`
 
 ### With Docker
 
@@ -19,8 +36,17 @@ A monolithic REST API with the ability to create users, image albums, posts and 
 docker-compose up
 ```
 
-### With Maven (need postgresql installed and reset the new environments in application.properties with your settings)
+### With Maven
 
 ```bash
 mvn spring-boot:run
 ```
+
+# Swagger
+
+After starting the application locally. The Swagger Documentation can be accessed
+at [**http://localhost:8080/blog**](http://localhost:8080/blog) and all accessible routes will be shown.
+
+# Credits
+
+- [Erick Batista Prado](https://github.com/batistaerick)
