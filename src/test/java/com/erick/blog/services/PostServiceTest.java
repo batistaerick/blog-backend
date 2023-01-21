@@ -88,7 +88,7 @@ class PostServiceTest {
         entity.setTitle("Another Title");
         List<Post> expected = List.of(post, entity);
 
-        when(repository.findAll()).thenReturn(expected);
+        when(repository.findByTitleContainingIgnoreCase("Title")).thenReturn(expected);
         assertIterableEquals(expected, service.findByTitle("Title"),
                 "Should be equal");
     }

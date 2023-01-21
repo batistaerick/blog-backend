@@ -30,7 +30,10 @@ public class PostService {
     }
 
     public List<Post> findByTitle(String title) {
-        return repository.findAll().stream().filter(post -> post.getTitle().contains(title)).toList();
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+        return repository.findByTitleContainingIgnoreCase(title);
     }
 
     public Post save(Long userId, PostDTO postDTO) {
