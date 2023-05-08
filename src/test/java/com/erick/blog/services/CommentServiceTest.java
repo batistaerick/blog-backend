@@ -1,9 +1,9 @@
 package com.erick.blog.services;
 
 import com.erick.blog.converters.CommentConverter;
-import com.erick.blog.entities.Comment;
-import com.erick.blog.entities.Post;
-import com.erick.blog.entities.User;
+import com.erick.blog.domains.entities.Comment;
+import com.erick.blog.domains.entities.Post;
+import com.erick.blog.domains.entities.User;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.CommentRepository;
 import org.junit.jupiter.api.BeforeEach;

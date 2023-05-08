@@ -1,8 +1,8 @@
 package com.erick.blog.services;
 
 import com.erick.blog.converters.AlbumConverter;
-import com.erick.blog.entities.Album;
-import com.erick.blog.entities.User;
+import com.erick.blog.domains.entities.Album;
+import com.erick.blog.domains.entities.User;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.AlbumRepository;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,8 +1,8 @@
 package com.erick.blog.services;
 
 import com.erick.blog.converters.PostConverter;
-import com.erick.blog.dtos.PostDTO;
-import com.erick.blog.entities.Post;
+import com.erick.blog.domains.dtos.PostDTO;
+import com.erick.blog.domains.entities.Post;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.erick.blog.dtos;
+package com.erick.blog.domains.dtos;
 
 import com.erick.blog.enums.RoleName;
 import lombok.Getter;

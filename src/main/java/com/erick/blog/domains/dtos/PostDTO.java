@@ -1,26 +1,26 @@
-package com.erick.blog.dtos;
+package com.erick.blog.domains.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.List;
 
 @Getter
 @Setter
-public class UserDTO implements Serializable {
+public class PostDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String name;
-    private String email;
-    private String password;
-    private List<RoleDTO> roles;
-    private List<PostDTO> posts;
+    private Instant date;
+    private String title;
+    private String body;
+    private String imageUrl;
+    private UserDTO user;
     private List<CommentDTO> comments;
-    private List<AlbumDTO> albums;
 
 }

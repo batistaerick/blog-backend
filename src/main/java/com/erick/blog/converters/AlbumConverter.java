@@ -1,7 +1,7 @@
 package com.erick.blog.converters;
 
-import com.erick.blog.dtos.AlbumDTO;
-import com.erick.blog.entities.Album;
+import com.erick.blog.domains.dtos.AlbumDTO;
+import com.erick.blog.domains.entities.Album;
 import com.erick.blog.exceptions.HandlerException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.erick.blog.repositories;
 
-import com.erick.blog.entities.User;
+import com.erick.blog.domains.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

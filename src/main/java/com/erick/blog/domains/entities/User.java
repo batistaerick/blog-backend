@@ -1,8 +1,11 @@
-package com.erick.blog.entities;
+package com.erick.blog.domains.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,9 +34,17 @@ public class User implements UserDetails, Serializable {
     private String name;
 
     @Column(unique = true)
+    @NotBlank(message = "Email cannot be blank")
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotBlank(message = "Password cannot be blank")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Pattern(
+            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
+            message = "Password must contain at least one number, " +
+                    "one uppercase letter, one lowercase letter, and on special character"
+    )
     private String password;
 
     @ManyToMany

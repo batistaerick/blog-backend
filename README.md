@@ -27,6 +27,12 @@ You need a username (email) and password to request end-points with Basic Auth.
 A default user will be created on first run of the application with the following login information so you can test it
 out:
 
+-
+
+//openssl genrsa -out keypair.pem 2048
+//openssl rsa -in keypair.pem -pubout -out public.pem
+//openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+
 - User: `test@test.com`
 - Password: `password`
 

@@ -1,4 +1,4 @@
-package com.erick.blog.dtos;
+package com.erick.blog.domains.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

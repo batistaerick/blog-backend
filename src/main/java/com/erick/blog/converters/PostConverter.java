@@ -1,7 +1,7 @@
 package com.erick.blog.converters;
 
-import com.erick.blog.dtos.PostDTO;
-import com.erick.blog.entities.Post;
+import com.erick.blog.domains.dtos.PostDTO;
+import com.erick.blog.domains.entities.Post;
 import com.erick.blog.exceptions.HandlerException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;

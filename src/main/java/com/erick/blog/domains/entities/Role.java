@@ -1,4 +1,4 @@
-package com.erick.blog.entities;
+package com.erick.blog.domains.entities;
 
 import com.erick.blog.enums.RoleName;
 import jakarta.persistence.*;

@@ -1,6 +1,6 @@
 package com.erick.blog.controllers;
 
-import com.erick.blog.dtos.CommentDTO;
+import com.erick.blog.domains.dtos.CommentDTO;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.services.CommentService;
 import com.fasterxml.jackson.databind.ObjectMapper;

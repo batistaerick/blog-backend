@@ -1,4 +1,4 @@
-package com.erick.blog.entities;
+package com.erick.blog.domains.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;

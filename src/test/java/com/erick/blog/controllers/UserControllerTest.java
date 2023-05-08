@@ -1,6 +1,6 @@
 package com.erick.blog.controllers;
 
-import com.erick.blog.dtos.UserDTO;
+import com.erick.blog.domains.dtos.UserDTO;
 import com.erick.blog.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;

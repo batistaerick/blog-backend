@@ -1,7 +1,7 @@
 package com.erick.blog.services;
 
 import com.erick.blog.converters.UserConverter;
-import com.erick.blog.entities.User;
+import com.erick.blog.domains.entities.User;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.UserRepository;
 import jakarta.transaction.Transactional;

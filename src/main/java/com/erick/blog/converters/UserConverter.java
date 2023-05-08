@@ -1,7 +1,7 @@
 package com.erick.blog.converters;
 
-import com.erick.blog.dtos.UserDTO;
-import com.erick.blog.entities.User;
+import com.erick.blog.domains.dtos.UserDTO;
+import com.erick.blog.domains.entities.User;
 import com.erick.blog.exceptions.HandlerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
