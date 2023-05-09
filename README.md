@@ -22,24 +22,24 @@ To run locally you need:
 
 # How to use
 
-You need a username (email) and password to request end-points with Basic Auth.
+Before launching the application, you will need to create the .pem files with the following commands:
 
-A default user will be created on first run of the application with the following login information so you can test it
-out:
+```bash
+cd src/main/resources/certs/
+openssl genrsa -out keypair.pem 2048
+openssl rsa -in keypair.pem -pubout -out public.pem
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+```
 
--
-
-//openssl genrsa -out keypair.pem 2048
-//openssl rsa -in keypair.pem -pubout -out public.pem
-//openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
-
-- User: `test@test.com`
-- Password: `password`
+Now you can create a new user through the endpoint ending in `/users`,
+you can see the json template in swagger documentation.
+After that you need to request a token via the `/token` endpoint.
+Then you will be able to use the `JWT token` for your requests.
 
 ### With Docker
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 ### With Maven
@@ -51,7 +51,7 @@ mvn spring-boot:run
 # Swagger
 
 After starting the application locally. The Swagger Documentation can be accessed
-at [**http://localhost:8080/blog**](http://localhost:8080/blog) and all accessible routes will be shown.
+at [**http://localhost:8080/api-doc**](http://localhost:8080/api-doc) and all accessible routes will be shown.
 
 # Credits
 
