@@ -11,6 +11,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'maven'
+      - name: Create certs directory
+        run: mkdir -p src/main/java/resources/certs
+      - name: Generate keypair.pem
+        run: openssl genrsa -out src/main/java/resources/certs/keypair.pem 2048
+      - name: Generate public.pem
+        run: openssl rsa -in src/main/java/resources/certs/keypair.pem -pubout -out src/main/java/resources/certs/public.pem
+      - name: Generate private.pem
+        run: openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in src/main/java/resources/certs/keypair.pem -out src/main/java/resources/certs/private.pem
       - name: Test with Maven
         run: mvn -B test --file pom.xml
   build:
