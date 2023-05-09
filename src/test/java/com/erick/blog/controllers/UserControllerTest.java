@@ -88,12 +88,6 @@ class UserControllerTest {
         mockMvc.perform(post("/users")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isUnauthorized());
-
-        mockMvc.perform(post("/users")
-                        .with(httpBasic("java@java.com", "password"))
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isCreated());
 
         assertNotNull(service.findByEmail("save@save.com"), "Should return a valid user");

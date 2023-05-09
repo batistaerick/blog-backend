@@ -11,6 +11,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
@@ -35,16 +36,18 @@ public class WebSecurityConfig {
         return http
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers(
-                                "/users",
                                 "/token",
-                                "/blog",
+                                "/api-doc",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**"
                         )
                         .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users")
+                        .permitAll()
                         .anyRequest()
-                        .authenticated())
+                        .authenticated()
+                )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
