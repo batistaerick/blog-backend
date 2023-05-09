@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import java.util.List;
 @Table(name = "t_user")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails, Serializable {
 
@@ -48,9 +50,11 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @ManyToMany
-    @JoinTable(name = "t_users_roles",
+    @JoinTable(
+            name = "t_users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<Role> roles;
 
     @OneToMany(mappedBy = "user")

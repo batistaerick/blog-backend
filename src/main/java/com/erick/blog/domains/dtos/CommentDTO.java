@@ -1,6 +1,8 @@
 package com.erick.blog.domains.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -9,6 +11,8 @@ import java.time.Instant;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommentDTO implements Serializable {
 
     @Serial

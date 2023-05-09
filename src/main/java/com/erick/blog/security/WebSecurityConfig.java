@@ -35,9 +35,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorization -> authorization
-                        .requestMatchers("/users").permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/token")).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(new AntPathRequestMatcher("/users"))
+                        .permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/token"))
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

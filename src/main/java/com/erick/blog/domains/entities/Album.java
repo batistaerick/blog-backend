@@ -2,6 +2,7 @@ package com.erick.blog.domains.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Table(name = "t_album")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Album implements Serializable {
 
