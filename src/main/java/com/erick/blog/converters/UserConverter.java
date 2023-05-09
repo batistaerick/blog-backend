@@ -1,8 +1,8 @@
 package com.erick.blog.converters;
 
-import com.erick.blog.Utils.DefaultConverters;
 import com.erick.blog.domains.dtos.UserDTO;
 import com.erick.blog.domains.entities.User;
+import com.erick.blog.utils.DefaultConverters;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +14,7 @@ public class UserConverter {
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());
         entity.setPassword(dto.getPassword());
+
         if (dto.getRoles() != null) {
             entity.setRoles(dto.getRoles().stream()
                     .map(DefaultConverters::roleDtoToEntity).toList());
@@ -39,6 +40,7 @@ public class UserConverter {
         dto.setName(entity.getName());
         dto.setEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
+
         if (entity.getRoles() != null) {
             dto.setRoles(entity.getRoles().stream()
                     .map(DefaultConverters::roleEntityToDto).toList());

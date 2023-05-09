@@ -1,8 +1,8 @@
 package com.erick.blog.converters;
 
-import com.erick.blog.Utils.DefaultConverters;
 import com.erick.blog.domains.dtos.AlbumDTO;
 import com.erick.blog.domains.entities.Album;
+import com.erick.blog.utils.DefaultConverters;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +12,10 @@ public class AlbumConverter {
         Album entity = new Album();
         entity.setId(dto.getId());
         entity.setImageUrl(dto.getImageUrl());
-        entity.setUser(DefaultConverters.userDtoToEntity(dto.getUser()));
+
+        if (dto.getUser() != null) {
+            entity.setUser(DefaultConverters.userDtoToEntity(dto.getUser()));
+        }
         return entity;
     }
 
@@ -20,7 +23,10 @@ public class AlbumConverter {
         AlbumDTO dto = new AlbumDTO();
         dto.setId(entity.getId());
         dto.setImageUrl(entity.getImageUrl());
-        dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
+
+        if (entity.getUser() != null) {
+            dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
+        }
         return dto;
     }
 

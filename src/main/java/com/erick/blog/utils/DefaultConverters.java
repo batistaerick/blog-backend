@@ -1,4 +1,4 @@
-package com.erick.blog.Utils;
+package com.erick.blog.utils;
 
 import com.erick.blog.domains.dtos.*;
 import com.erick.blog.domains.entities.*;

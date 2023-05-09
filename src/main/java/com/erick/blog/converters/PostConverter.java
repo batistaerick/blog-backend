@@ -1,8 +1,8 @@
 package com.erick.blog.converters;
 
-import com.erick.blog.Utils.DefaultConverters;
 import com.erick.blog.domains.dtos.PostDTO;
 import com.erick.blog.domains.entities.Post;
+import com.erick.blog.utils.DefaultConverters;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,8 +15,14 @@ public class PostConverter {
         entity.setTitle(dto.getTitle());
         entity.setBody(dto.getBody());
         entity.setImageUrl(dto.getImageUrl());
-        entity.setComments(dto.getComments().stream().map(DefaultConverters::commentDtoToEntity).toList());
-        entity.setUser(DefaultConverters.userDtoToEntity(dto.getUser()));
+
+        if (dto.getComments() != null) {
+            entity.setComments(dto.getComments().stream()
+                    .map(DefaultConverters::commentDtoToEntity).toList());
+        }
+        if (dto.getUser() != null) {
+            entity.setUser(DefaultConverters.userDtoToEntity(dto.getUser()));
+        }
         return entity;
     }
 
@@ -27,8 +33,13 @@ public class PostConverter {
         dto.setTitle(entity.getTitle());
         dto.setBody(entity.getBody());
         dto.setImageUrl(entity.getImageUrl());
-        dto.setComments(entity.getComments().stream().map(DefaultConverters::commentEntityToDto).toList());
-        dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
+
+        if (entity.getComments() != null) {
+            dto.setComments(entity.getComments().stream().map(DefaultConverters::commentEntityToDto).toList());
+        }
+        if (entity.getUser() != null) {
+            dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
+        }
         return dto;
     }
 
