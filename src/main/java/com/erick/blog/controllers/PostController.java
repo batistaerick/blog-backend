@@ -1,7 +1,7 @@
 package com.erick.blog.controllers;
 
-import com.erick.blog.dtos.PostDTO;
-import com.erick.blog.entities.Post;
+import com.erick.blog.domains.dtos.PostDTO;
+import com.erick.blog.domains.entities.Post;
 import com.erick.blog.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +22,7 @@ public class PostController {
     private final PostService service;
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<Post> save(@RequestParam Long userId, @RequestBody PostDTO postDTO) {
         Post post = service.save(userId, postDTO);
         URI uri = ServletUriComponentsBuilder

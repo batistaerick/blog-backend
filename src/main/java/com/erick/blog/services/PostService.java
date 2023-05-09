@@ -1,8 +1,8 @@
 package com.erick.blog.services;
 
 import com.erick.blog.converters.PostConverter;
-import com.erick.blog.dtos.PostDTO;
-import com.erick.blog.entities.Post;
+import com.erick.blog.domains.dtos.PostDTO;
+import com.erick.blog.domains.entities.Post;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,10 @@ public class PostService {
     }
 
     public List<Post> findByTitle(String title) {
-        return repository.findAll().stream().filter(post -> post.getTitle().contains(title)).toList();
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+        return repository.findByTitleContainingIgnoreCase(title);
     }
 
     public Post save(Long userId, PostDTO postDTO) {

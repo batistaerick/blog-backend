@@ -1,8 +1,9 @@
-package com.erick.blog.entities;
+package com.erick.blog.domains.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.time.Instant;
 @Table(name = "t_comment")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Comment implements Serializable {
 

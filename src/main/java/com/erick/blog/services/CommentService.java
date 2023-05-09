@@ -1,8 +1,8 @@
 package com.erick.blog.services;
 
 import com.erick.blog.converters.CommentConverter;
-import com.erick.blog.dtos.CommentDTO;
-import com.erick.blog.entities.Comment;
+import com.erick.blog.domains.dtos.CommentDTO;
+import com.erick.blog.domains.entities.Comment;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.CommentRepository;
 import lombok.RequiredArgsConstructor;

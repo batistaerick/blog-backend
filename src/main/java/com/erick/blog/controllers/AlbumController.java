@@ -1,7 +1,7 @@
 package com.erick.blog.controllers;
 
-import com.erick.blog.dtos.AlbumDTO;
-import com.erick.blog.entities.Album;
+import com.erick.blog.domains.dtos.AlbumDTO;
+import com.erick.blog.domains.entities.Album;
 import com.erick.blog.services.AlbumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

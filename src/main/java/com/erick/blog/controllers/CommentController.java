@@ -1,7 +1,7 @@
 package com.erick.blog.controllers;
 
-import com.erick.blog.dtos.CommentDTO;
-import com.erick.blog.entities.Comment;
+import com.erick.blog.domains.dtos.CommentDTO;
+import com.erick.blog.domains.entities.Comment;
 import com.erick.blog.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

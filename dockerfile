@@ -1,8 +1,12 @@
-FROM maven:3.8.7-openjdk-18 AS build
-COPY . /home/blog/
-RUN mvn -f /home/blog/pom.xml clean install
+FROM openjdk:17 AS build
+WORKDIR /app
+COPY . .
+RUN sed -i -e 's/\r$//' mvnw
+RUN chmod +x mvnw
+RUN ./mvnw clean package
 
 FROM openjdk:17
+WORKDIR /app
 EXPOSE 8080
-COPY --from=build /home/blog/target/*.jar blog.jar
-ENTRYPOINT [ "java", "-jar", "/blog.jar" ]
+COPY --from=build /app/target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]

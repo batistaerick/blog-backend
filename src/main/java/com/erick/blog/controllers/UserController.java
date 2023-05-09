@@ -1,7 +1,7 @@
 package com.erick.blog.controllers;
 
-import com.erick.blog.dtos.UserDTO;
-import com.erick.blog.entities.User;
+import com.erick.blog.domains.dtos.UserDTO;
+import com.erick.blog.domains.entities.User;
 import com.erick.blog.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,6 @@ public class UserController {
     private final UserService service;
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO) {
         User user = service.save(userDTO);
         URI uri = ServletUriComponentsBuilder
