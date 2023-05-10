@@ -14,7 +14,7 @@ services:
     networks:
       - backend
 
-  springboot:
+  spring-boot:
     depends_on:
       - postgres
     build: .
@@ -29,6 +29,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=123456789
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRINGDOC.SWAGGER-UI.PATH=/api-doc
+      - RSA.PRIVATE-KEY=classpath:certs/private.pem
+      - RSA.PUBLIC-KEY=classpath:certs/public.pem
     networks:
       - backend
 
