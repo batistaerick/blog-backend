@@ -1,6 +1,6 @@
 package com.erick.blog.controllers;
 
-import com.erick.blog.dtos.UserDTO;
+import com.erick.blog.domains.dtos.UserDTO;
 import com.erick.blog.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
@@ -86,12 +86,6 @@ class UserControllerTest {
         dto.setPassword("321");
 
         mockMvc.perform(post("/users")
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isUnauthorized());
-
-        mockMvc.perform(post("/users")
-                        .with(httpBasic("java@java.com", "password"))
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isCreated());

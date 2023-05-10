@@ -1,32 +1,41 @@
 package com.erick.blog.converters;
 
-import com.erick.blog.dtos.CommentDTO;
-import com.erick.blog.entities.Comment;
-import com.erick.blog.exceptions.HandlerException;
-import org.springframework.beans.BeanUtils;
+import com.erick.blog.domains.dtos.CommentDTO;
+import com.erick.blog.domains.entities.Comment;
+import com.erick.blog.utils.DefaultConverters;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CommentConverter {
 
     public Comment dtoToEntity(CommentDTO dto) {
-        try {
-            Comment entity = new Comment();
-            BeanUtils.copyProperties(dto, entity);
-            return entity;
-        } catch (Exception e) {
-            throw new HandlerException(e);
+        Comment entity = new Comment();
+        entity.setId(dto.getId());
+        entity.setText(dto.getText());
+        entity.setDate(dto.getDate());
+
+        if (dto.getPost() != null) {
+            entity.setPost(DefaultConverters.postDtoToEntity(dto.getPost()));
         }
+        if (dto.getUser() != null) {
+            entity.setUser(DefaultConverters.userDtoToEntity(dto.getUser()));
+        }
+        return entity;
     }
 
     public CommentDTO entityToDto(Comment entity) {
-        try {
-            CommentDTO dto = new CommentDTO();
-            BeanUtils.copyProperties(entity, dto);
-            return dto;
-        } catch (Exception e) {
-            throw new HandlerException(e);
+        CommentDTO dto = new CommentDTO();
+        dto.setId(entity.getId());
+        dto.setText(entity.getText());
+        dto.setDate(entity.getDate());
+
+        if (entity.getPost() != null) {
+            dto.setPost(DefaultConverters.postEntityToDto(entity.getPost()));
         }
+        if (entity.getUser() != null) {
+            dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
+        }
+        return dto;
     }
 
 }

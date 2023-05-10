@@ -1,32 +1,33 @@
 package com.erick.blog.converters;
 
-import com.erick.blog.dtos.AlbumDTO;
-import com.erick.blog.entities.Album;
-import com.erick.blog.exceptions.HandlerException;
-import org.springframework.beans.BeanUtils;
+import com.erick.blog.domains.dtos.AlbumDTO;
+import com.erick.blog.domains.entities.Album;
+import com.erick.blog.utils.DefaultConverters;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AlbumConverter {
 
     public Album dtoToEntity(AlbumDTO dto) {
-        try {
-            Album entity = new Album();
-            BeanUtils.copyProperties(dto, entity);
-            return entity;
-        } catch (Exception e) {
-            throw new HandlerException(e);
+        Album entity = new Album();
+        entity.setId(dto.getId());
+        entity.setImageUrl(dto.getImageUrl());
+
+        if (dto.getUser() != null) {
+            entity.setUser(DefaultConverters.userDtoToEntity(dto.getUser()));
         }
+        return entity;
     }
 
     public AlbumDTO entityToDto(Album entity) {
-        try {
-            AlbumDTO dto = new AlbumDTO();
-            BeanUtils.copyProperties(entity, dto);
-            return dto;
-        } catch (Exception e) {
-            throw new HandlerException(e);
+        AlbumDTO dto = new AlbumDTO();
+        dto.setId(entity.getId());
+        dto.setImageUrl(entity.getImageUrl());
+
+        if (entity.getUser() != null) {
+            dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
         }
+        return dto;
     }
 
 }

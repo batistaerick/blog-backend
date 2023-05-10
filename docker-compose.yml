@@ -33,8 +33,8 @@ services:
       - backend
 
 volumes:
-  postgres_data: { }
-  spring_data: { }
+  postgres_data:
+  spring_data:
 
 networks:
   backend:

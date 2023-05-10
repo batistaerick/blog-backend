@@ -1,8 +1,8 @@
 package com.erick.blog.services;
 
 import com.erick.blog.converters.PostConverter;
-import com.erick.blog.entities.Post;
-import com.erick.blog.entities.User;
+import com.erick.blog.domains.entities.Post;
+import com.erick.blog.domains.entities.User;
 import com.erick.blog.exceptions.HandlerException;
 import com.erick.blog.repositories.PostRepository;
 import org.junit.jupiter.api.AfterAll;
@@ -88,7 +88,7 @@ class PostServiceTest {
         entity.setTitle("Another Title");
         List<Post> expected = List.of(post, entity);
 
-        when(repository.findAll()).thenReturn(expected);
+        when(repository.findByTitleContainingIgnoreCase("Title")).thenReturn(expected);
         assertIterableEquals(expected, service.findByTitle("Title"),
                 "Should be equal");
     }
