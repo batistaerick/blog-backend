@@ -2,7 +2,6 @@ package com.erick.blog.converters;
 
 import com.erick.blog.domains.dtos.CommentDTO;
 import com.erick.blog.domains.entities.Comment;
-import com.erick.blog.utils.DefaultConverters;
 import org.springframework.stereotype.Component;
 
 @Component

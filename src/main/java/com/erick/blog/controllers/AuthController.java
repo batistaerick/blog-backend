@@ -16,7 +16,7 @@ public class AuthController {
     private final TokenService service;
 
     @PostMapping
-    public ResponseEntity<String> token(Authentication authentication) {
+    public ResponseEntity<String> generateToken(Authentication authentication) {
         String token = service.generateToken(authentication);
         return ResponseEntity.ok(token);
     }

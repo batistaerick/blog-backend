@@ -1,13 +1,13 @@
 package com.erick.blog.controllers;
 
 import com.erick.blog.domains.dtos.PostDTO;
-import com.erick.blog.domains.entities.Post;
 import com.erick.blog.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,38 +23,44 @@ public class PostController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<Post> save(@RequestParam Long userId, @RequestBody PostDTO postDTO) {
-        Post post = service.save(userId, postDTO);
+    public ResponseEntity<PostDTO> save(@RequestBody PostDTO postDTO, Authentication authentication) {
+        PostDTO dto = service.save(postDTO, authentication);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(post.getId())
+                .buildAndExpand(dto.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(post);
+        return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<PostDTO> update(@RequestBody PostDTO postDTO, Authentication authentication) {
+        return ResponseEntity.ok(service.update(postDTO, authentication));
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<Post>> findAll(Pageable pageable) {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Page<PostDTO>> findAll(Pageable pageable) {
         return ResponseEntity.ok(service.findAll(pageable));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Post> findById(@PathVariable Long id) {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<PostDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping("/find-by-title/{title}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Post>> findByTitle(@PathVariable String title) {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<List<PostDTO>> findByTitle(@PathVariable String title) {
         return ResponseEntity.ok(service.findByTitle(title));
     }
 
-    @DeleteMapping("/delete-by-id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteById(@RequestParam Long postId, @RequestParam String userEmail) {
-        service.deleteById(postId, userEmail);
+    @DeleteMapping("/delete-by-id/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id, Authentication authentication) {
+        service.deleteById(id, authentication);
         return ResponseEntity.noContent().build();
     }
 

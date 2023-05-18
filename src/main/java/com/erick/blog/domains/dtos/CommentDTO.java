@@ -1,5 +1,6 @@
 package com.erick.blog.domains.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,10 @@ public class CommentDTO implements Serializable {
 
     private Long id;
     private String text;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant date;
+
     private PostDTO post;
     private UserDTO user;
 
