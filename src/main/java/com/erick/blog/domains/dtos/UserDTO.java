@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,7 +23,7 @@ public class UserDTO implements Serializable {
     private String name;
     private String email;
     private String password;
-    private List<RoleDTO> roles;
+    private Set<RoleDTO> roles;
     private List<PostDTO> posts;
     private List<CommentDTO> comments;
     private List<AlbumDTO> albums;

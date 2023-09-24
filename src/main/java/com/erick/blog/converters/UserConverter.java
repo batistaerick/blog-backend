@@ -5,6 +5,8 @@ import com.erick.blog.domains.entities.User;
 import com.erick.blog.utils.DefaultConverters;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 public class UserConverter {
 
@@ -17,7 +19,7 @@ public class UserConverter {
 
         if (dto.getRoles() != null) {
             entity.setRoles(dto.getRoles().stream()
-                    .map(DefaultConverters::roleDtoToEntity).toList());
+                    .map(DefaultConverters::roleDtoToEntity).collect(Collectors.toSet()));
         }
         if (dto.getPosts() != null) {
             entity.setPosts(dto.getPosts().stream()
@@ -43,7 +45,7 @@ public class UserConverter {
 
         if (entity.getRoles() != null) {
             dto.setRoles(entity.getRoles().stream()
-                    .map(DefaultConverters::roleEntityToDto).toList());
+                    .map(DefaultConverters::roleEntityToDto).collect(Collectors.toSet()));
         }
         if (entity.getPosts() != null) {
             dto.setPosts(entity.getPosts().stream()
